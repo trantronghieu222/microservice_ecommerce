@@ -1,4 +1,4 @@
-package com.shop.accountservice.exception.custom;
+package com.shop.cartservice.exception.custom;
 
 public class InvalidInputException extends RuntimeException {
     public InvalidInputException(String message) {

@@ -1,6 +1,7 @@
 package com.shop.accountservice.controller;
 
 import com.shop.accountservice.dto.request.AccountDTO;
+import com.shop.accountservice.dto.request.AccountUpdateDTO;
 import com.shop.accountservice.dto.response.ApiResponse;
 import com.shop.accountservice.entity.Account;
 import com.shop.accountservice.service.impl.AccountServiceImpl;
@@ -42,5 +43,24 @@ public class AccountController {
         Account account = accountService.create(request);
         ApiResponse<Account> apiResponse = ApiResponse.createResponse(account, "Thêm tài khoản thành công!", HttpStatus.CREATED.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Account>> updateAccount(
+            @RequestParam Integer UserId,
+            @RequestBody AccountUpdateDTO accountUpdateDTO
+            ){
+        Account account = accountService.update(UserId, accountUpdateDTO);
+        ApiResponse<Account> apiResponse = ApiResponse.createResponse(account, "Cập nhật thành công!", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteAccount(
+            @RequestParam Integer UserId
+    ){
+        accountService.delete(UserId);
+        ApiResponse<Object> apiResponse = ApiResponse.createResponse(null, "Xoá thành công!", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

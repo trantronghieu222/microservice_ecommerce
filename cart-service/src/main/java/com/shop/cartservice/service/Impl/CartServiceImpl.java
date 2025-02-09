@@ -1,6 +1,11 @@
 package com.shop.cartservice.service.Impl;
 
+import com.shop.cartservice.client.AccountClient;
+import com.shop.cartservice.client.ProductClient;
+import com.shop.cartservice.dto.request.Product;
+import com.shop.cartservice.dto.request.UpdateQuantityDTO;
 import com.shop.cartservice.entity.Cart;
+import com.shop.cartservice.exception.custom.ResourceNotFoundException;
 import com.shop.cartservice.repository.CartRepository;
 import com.shop.cartservice.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +19,12 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private ProductClient productClient;
+
+    @Autowired
+    private AccountClient accountClient;
+
     @Override
     public List<Cart> findAll() {
         return cartRepository.findAll();
@@ -21,7 +32,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart findById(Integer id) {
-        return cartRepository.findById(id).orElseThrow(() -> new RuntimeException("Cart not found"));
+        return cartRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
     }
 
     @Override
@@ -31,6 +43,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart save(Cart request) {
+        accountClient.getAccountById(request.getUserId());
+        productClient.getProductById(request.getProductId());
+
         Optional<Cart> cart = cartRepository.findByUserIdAndProductId(request.getUserId(), request.getProductId());
         if (cart.isPresent()) {
             Cart existingCart = cart.get();
@@ -43,11 +58,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Cart update(Integer id, Cart request) {
+    public Cart updateQuantity(Integer id, UpdateQuantityDTO request) {
         Cart cart = findById(id);
         cart.setProductQuantity(request.getProductQuantity());
-        cart.setUserId(request.getUserId());
-        cart.setProductId(request.getProductId());
         return cartRepository.save(cart);
     }
 

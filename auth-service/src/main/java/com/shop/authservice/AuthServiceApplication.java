@@ -1,4 +1,4 @@
-package com.shop.cartservice;
+package com.shop.authservice;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableFeignClients
-public class CartServiceApplication {
+public class AuthServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CartServiceApplication.class, args);
+		SpringApplication.run(AuthServiceApplication.class, args);
 	}
 
 	@Bean

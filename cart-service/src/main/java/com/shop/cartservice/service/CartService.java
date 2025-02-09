@@ -1,5 +1,6 @@
 package com.shop.cartservice.service;
 
+import com.shop.cartservice.dto.request.UpdateQuantityDTO;
 import com.shop.cartservice.entity.Cart;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface CartService {
 
     Cart save(Cart request);
 
-    Cart update(Integer id, Cart request);
+    Cart updateQuantity(Integer id, UpdateQuantityDTO request);
 
     void delete(Integer id);
 }
