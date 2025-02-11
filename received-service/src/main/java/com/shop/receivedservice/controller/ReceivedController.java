@@ -1,10 +1,13 @@
 package com.shop.receivedservice.controller;
 
+import com.shop.receivedservice.dto.request.ReceivedCreateRequest;
+import com.shop.receivedservice.dto.response.ApiResponse;
 import com.shop.receivedservice.entity.Received;
 import com.shop.receivedservice.entity.ReceivedDetail;
 import com.shop.receivedservice.service.impl.ReceivedServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +32,15 @@ public class ReceivedController {
     ){
         Received received = receivedService.save(UserId, receivedDetails);
         return ResponseEntity.ok(received);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ApiResponse<Received>> create(
+            @RequestBody ReceivedCreateRequest receivedCreateRequest
+    ){
+        Received received = receivedService.create(receivedCreateRequest);
+        ApiResponse<Received> apiResponse = ApiResponse.createResponse(received, "Thành công", HttpStatus.CREATED.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
     @DeleteMapping

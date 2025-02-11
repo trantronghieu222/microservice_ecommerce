@@ -1,30 +1,15 @@
 package com.shop.accountservice.dto.request;
 
-import com.shop.accountservice.common.Permission;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
+import com.shop.accountservice.common.Role;
 
 public class AccountDTO {
-    @Column(name = "account_name", unique = true, nullable = false)
     private String username;
-
-    @Column(name = "account_password", nullable = false)
     private String password;
-
-    @Column(name = "customer_name")
     private String customerName;
-
-    @Column(name = "customer_phone")
     private String customerPhone;
-
-    @Column(name = "customer_address")
     private String customerAddress;
-
-    @Column(name = "customer_email")
     private String customerEmail;
-
-    @JoinColumn(name = "permission", nullable = false)
-    private Permission permission;
+    private Role role;
 
     // Getter & Setter
     public String getUsername() {
@@ -75,11 +60,11 @@ public class AccountDTO {
         this.customerEmail = customerEmail;
     }
 
-    public Permission getPermission() {
-        return permission;
+    public Role getRole() {
+        return role;
     }
 
-    public void setPermission(Permission permission) {
-        this.permission = permission;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

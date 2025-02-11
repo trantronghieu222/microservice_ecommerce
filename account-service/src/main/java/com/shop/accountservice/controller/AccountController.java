@@ -2,6 +2,7 @@ package com.shop.accountservice.controller;
 
 import com.shop.accountservice.dto.request.AccountDTO;
 import com.shop.accountservice.dto.request.AccountUpdateDTO;
+import com.shop.accountservice.dto.response.AccountResponseDTO;
 import com.shop.accountservice.dto.response.ApiResponse;
 import com.shop.accountservice.entity.Account;
 import com.shop.accountservice.service.impl.AccountServiceImpl;
@@ -29,10 +30,19 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Account>> getAccountById(
-            @RequestParam Integer id
+            @PathVariable Integer id
     ){
         Account account = accountService.findById(id);
         ApiResponse<Account> apiResponse = ApiResponse.createResponse(account, "Thành công!", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/Existing")
+    public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountByUsername(
+            @RequestParam String Username
+    ){
+        AccountResponseDTO account = accountService.findByUsername(Username);
+        ApiResponse<AccountResponseDTO> apiResponse = ApiResponse.createResponse(account, "Thành công!", HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

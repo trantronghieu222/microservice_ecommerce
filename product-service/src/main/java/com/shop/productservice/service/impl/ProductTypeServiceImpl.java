@@ -2,7 +2,8 @@ package com.shop.productservice.service.impl;
 
 import com.shop.productservice.dto.request.ProductTypeCreate;
 import com.shop.productservice.entity.ProductType;
-import com.shop.productservice.exception.custom.ResourceNotFoundException;
+import com.shop.productservice.exception.AppException;
+import com.shop.productservice.exception.ErrorCode;
 import com.shop.productservice.repository.ProductTypeRepository;
 import com.shop.productservice.service.ProductTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     @Override
     public ProductType findById(Integer id) {
         return productTypeRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Product type not found!"));
+                orElseThrow(() -> new AppException(ErrorCode.PRODUCT_TYPE_NOT_FOUND));
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.shop.authservice.entity;
 
-import com.shop.authservice.common.Permission;
+import com.shop.authservice.common.Role;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,8 +20,8 @@ public class Auth {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "permission", nullable = false)
-    private Permission permission;
+    @Column(name = "role", nullable = false)
+    private Role role;
 
     // Getter & Setter
     public Integer getAccountId() {
@@ -56,11 +56,11 @@ public class Auth {
         this.password = password;
     }
 
-    public Permission getPermission() {
-        return permission;
+    public Role getRole() {
+        return role;
     }
 
-    public void setPermission(Permission permission) {
-        this.permission = permission;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

@@ -2,6 +2,8 @@ package com.shop.productservice.service.impl;
 
 import com.shop.productservice.dto.request.SupplierCreate;
 import com.shop.productservice.entity.Supplier;
+import com.shop.productservice.exception.AppException;
+import com.shop.productservice.exception.ErrorCode;
 import com.shop.productservice.repository.SupplierRepository;
 import com.shop.productservice.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier findById(Integer id) {
-        return supplierRepository.findById(id).orElseThrow(() -> new RuntimeException("Supplier not found"));
+        return supplierRepository.findById(id).
+                orElseThrow(() -> new AppException(ErrorCode.SUPPLIER_NOT_FOUND));
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.shop.authservice.dto;
+package com.shop.authservice.dto.request;
 
 public class LoginDTO {
     private String username;

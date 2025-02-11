@@ -43,13 +43,22 @@ public class ProductController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Product>> updateProduct(
             @RequestParam Integer id,
             @RequestBody ProductCreate request
     ){
         Product product = productService.update(id, request);
         ApiResponse<Product> apiResponse = ApiResponse.createResponse(product, "Cập nhật sản phẩm thành công!", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteProduct(
+            @RequestParam Integer id
+    ){
+        productService.delete(id);
+        ApiResponse<Object> apiResponse = ApiResponse.createResponse(null, "Xoá sản phẩm thành công!", HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package com.shop.accountservice.dto.request;
 
-import com.shop.accountservice.common.Permission;
+import com.shop.accountservice.common.Role;
 
 public class AccountUpdateDTO {
     private String password;
@@ -9,7 +9,7 @@ public class AccountUpdateDTO {
     private String customerAddress;
     private String customerEmail;
     private Boolean isDeleted;
-    private Permission permission;
+    private Role role;
 
     public String getPassword() {
         return password;
@@ -59,11 +59,11 @@ public class AccountUpdateDTO {
         isDeleted = deleted;
     }
 
-    public Permission getPermission() {
-        return permission;
+    public Role getRole() {
+        return role;
     }
 
-    public void setPermission(Permission permission) {
-        this.permission = permission;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

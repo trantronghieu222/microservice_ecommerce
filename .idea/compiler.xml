@@ -8,7 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="received-service" />
       </profile>
-      <profile name="Annotation profile for Cart Service" enabled="true">
+      <profile name="Annotation profile for Order Service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -17,6 +17,7 @@
         </processorPath>
         <module name="product-service" />
         <module name="cart-service" />
+        <module name="auth-service" />
         <module name="order-service" />
         <module name="account-service" />
       </profile>
@@ -25,6 +26,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="account-service" options="-parameters" />
+      <module name="auth-service" options="-parameters" />
       <module name="cart-service" options="-parameters" />
       <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />

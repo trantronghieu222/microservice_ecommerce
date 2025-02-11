@@ -1,14 +1,14 @@
-package com.shop.authservice.common;
+package com.shop.accountservice.common;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum Permission {
+public enum Role {
     ADMIN("Admin"),
     USER("User");
 
     private final String displayname;
 
-    Permission(String displayname) {
+    Role(String displayname) {
         this.displayname = displayname;
     }
 

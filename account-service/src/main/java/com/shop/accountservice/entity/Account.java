@@ -1,6 +1,6 @@
 package com.shop.accountservice.entity;
 
-import com.shop.accountservice.common.Permission;
+import com.shop.accountservice.common.Role;
 import jakarta.persistence.*;
 
 @Entity
@@ -31,8 +31,8 @@ public class Account {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
-    @JoinColumn(name = "permission", nullable = false)
-    private Permission permission;
+    @JoinColumn(name = "role", nullable = false)
+    private Role role;
 
     // Getter & Setter
     public Integer getAccountId() {
@@ -99,11 +99,11 @@ public class Account {
         isDeleted = deleted;
     }
 
-    public Permission getPermission() {
-        return permission;
+    public Role getRole() {
+        return role;
     }
 
-    public void setPermission(Permission permission) {
-        this.permission = permission;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
