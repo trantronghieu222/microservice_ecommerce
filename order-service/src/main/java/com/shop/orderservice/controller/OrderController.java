@@ -6,7 +6,6 @@ import com.shop.orderservice.dto.response.ApiResponse;
 import com.shop.orderservice.entity.Order;
 import com.shop.orderservice.entity.OrderDetail;
 import com.shop.orderservice.service.impl.OrderServiceImpl;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Orders")
+@RequestMapping("/orders")
 @Tag(name = "Orders")
 public class OrderController {
     @Autowired

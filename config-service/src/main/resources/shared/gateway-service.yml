@@ -9,10 +9,10 @@ spring:
       discovery:
         locator:
           enabled: true
-      routes:
-        - id: user-route
-          uri: lb://account-service
-          predicates:
-            - Path=/user/**
-          filters:
-            - StripPrefix=1
+#      routes:
+#        - id: user-route
+#          uri: lb://account-service
+#          predicates:
+#            - Path=/user/**
+#          filters:
+#            - StripPrefix=1

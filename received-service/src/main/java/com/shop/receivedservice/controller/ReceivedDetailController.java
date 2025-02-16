@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ReceivedDetail")
+@RequestMapping("/received-detail")
 @Tag(name = "Received Detail")
 public class ReceivedDetailController {
     @Autowired

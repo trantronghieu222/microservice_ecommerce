@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ProductType")
+@RequestMapping("/productType")
 @Tag(name = "ProductType")
 public class ProductTypeController {
     @Autowired

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Received")
+@RequestMapping("/received")
 @Tag(name = "Received")
 public class ReceivedController {
     @Autowired

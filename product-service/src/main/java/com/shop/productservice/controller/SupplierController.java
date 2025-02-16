@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Supplier")
+@RequestMapping("/supplier")
 @Tag(name = "Supplier")
 public class SupplierController {
     @Autowired

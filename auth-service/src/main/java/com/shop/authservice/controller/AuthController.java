@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/Auth")
+@RequestMapping("/auth")
 @Tag(name = "Auth")
 public class AuthController {
     @Autowired
     private AuthServiceImpl authService;
 
-    @PostMapping("/Login")
+    @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login (
             @RequestBody LoginDTO loginDTO
     ){
@@ -31,7 +31,7 @@ public class AuthController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/Register")
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse<Auth>> register(@RequestBody Auth request){
         Auth auth = authService.register(request);
         ApiResponse<Auth> apiResponse = ApiResponse.createResponse(auth, "Đăng ký thành công!", HttpStatus.OK.value());

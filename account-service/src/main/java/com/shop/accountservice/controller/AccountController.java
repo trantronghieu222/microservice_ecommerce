@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Account")
+@RequestMapping("/account")
 @Tag(name = "Account")
 public class AccountController {
     @Autowired
@@ -37,7 +37,7 @@ public class AccountController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/Existing")
+    @GetMapping("/existing")
     public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountByUsername(
             @RequestParam String Username
     ){
