@@ -1,11 +1,12 @@
 "use client"
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
-import AdminUserTable from '@/components/AdminUserTable/AdminUserTable';
 import { PlusOutlined } from '@ant-design/icons';
+import AdminReceivedTable from '@/components/AdminReceivedTable/AdminReceivedTable';
+
 type Props = {}
 
-const UserManagement = (props: Props) => {
+const ReceivedManagement = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -24,14 +25,14 @@ const UserManagement = (props: Props) => {
     <>
       {/* Title */}
       <div className='d-flex justify-content-between py-3'>
-        <h3>User Management</h3>
+        <h3>Received Management</h3>
         <Button type="primary" onClick={showModal}>
-          <PlusOutlined /> Add User
+          <PlusOutlined /> Add Supplier
         </Button>
       </div>
 
       {/* Body */}
-      <AdminUserTable></AdminUserTable>
+      <AdminReceivedTable></AdminReceivedTable>
 
       <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
         <p>Some contents...</p>
@@ -42,4 +43,4 @@ const UserManagement = (props: Props) => {
   )
 }
 
-export default UserManagement
+export default ReceivedManagement
