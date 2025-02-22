@@ -1,0 +1,25 @@
+.product-card {
+    max-width: 350px;
+    text-decoration: none;
+
+    img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .card-body {
+        .original-price {
+            text-decoration: line-through;
+            /* Gạch ngang giá gốc */
+            margin-right: 5px;
+        }
+
+        .discounted-price {
+            color: red;
+            /* Màu đỏ cho giá sau khi giảm */
+            font-weight: bold;
+        }
+
+    }
+}

@@ -1,0 +1,15 @@
+.ant-modal {
+    width: 90vw  !important;
+    max-width: 850px !important;
+
+    .ant-modal-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #e05050;
+        text-align: center;
+    }
+
+    .ant-modal-footer {
+        padding-top: 20px;
+    }
+}

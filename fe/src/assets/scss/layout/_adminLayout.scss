@@ -1,0 +1,10 @@
+/* Main Content */
+#main {
+    transition: margin-left 0.3s;
+    padding: 20px;
+    margin-left: 250px;
+
+    .sidebar.closed & {
+        margin-left: 70px;
+    }
+}

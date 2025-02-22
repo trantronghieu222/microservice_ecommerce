@@ -1,0 +1,22 @@
+.banner {
+    max-height: 1000px;
+    overflow: hidden;
+
+    .carousel-inner {
+        display: flex;
+        align-items: center; // Căn giữa hình ảnh theo chiều dọc
+    }
+
+    .carousel-item {
+        height: 600px; // Đặt chiều cao cố định cho tất cả slide
+    }
+
+    .carousel-item img {
+        height: 100%;
+        object-fit: cover; // Cắt ảnh để vừa khung mà không méo
+    }
+
+    .carousel-caption {
+        bottom: 10%;
+    }
+}
