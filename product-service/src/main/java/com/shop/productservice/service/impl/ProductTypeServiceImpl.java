@@ -31,7 +31,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     @Override
     public ProductType save(ProductTypeCreate request) {
         ProductType productType = new ProductType();
-        productType.setTypeName(request.getTypeName());
+        productType.setProductTypeName(request.getTypeName());
         productTypeRepository.save(productType);
         return productType;
     }
@@ -39,7 +39,7 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     @Override
     public ProductType update(Integer id, ProductTypeCreate request) {
         ProductType productType = findById(id);
-        productType.setTypeName(request.getTypeName());
+        productType.setProductTypeName(request.getTypeName());
         productTypeRepository.save(productType);
         return productType;
     }

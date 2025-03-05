@@ -29,8 +29,8 @@ export default OrderReducer.reducer
 /* -------------------------------------------------------------------------------------------------------- */
 export const getAllOrderApi = () => {
   return async(dispatch: DispatchType) => {
-    const res = await axios.get("http://localhost:8083/orders")
-    const action: PayloadAction<OrderModelType[]> = setArrOrderAction(res.data)
-    dispatch(action)
+    const res = await axios.get("http://localhost:8080/order-service/orders");
+    const action: PayloadAction<OrderModelType[]> = setArrOrderAction(res.data);
+    dispatch(action);
   }
 }

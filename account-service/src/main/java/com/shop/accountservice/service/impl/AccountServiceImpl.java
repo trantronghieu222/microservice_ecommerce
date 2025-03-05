@@ -25,14 +25,22 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private ModelMapper modelMapper;
 
+//    @Override
+//    public List<Account> findAll() {
+//        return accountRepository.findAll();
+//    }
+
     @Override
-    public List<Account> findAll() {
-        return accountRepository.findAll();
+    public List<Account> getAll() {
+        return accountRepository.findByAndIsDeletedFalse();
     }
 
     @Override
     public Account findById(Integer id) {
-        return accountRepository.findById(id)
+//        return accountRepository.findById(id)
+//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Optional<Account> account = accountRepository.findById(id);
+        return account.filter(a -> !a.getDeleted()) // Hoặc a -> a.getIsDeleted() == false nếu isDeleted là Boolean
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 

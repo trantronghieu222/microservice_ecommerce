@@ -1,17 +1,21 @@
 package com.shop.productservice.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ProductCreate {
     private String productName;
     private Integer productInventory;
-    private Date productWarranty;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate productWarranty;
     private String productImage;
     private Integer productSaleprice;
     private Integer productInprice;
     private String productDescription;
     private Integer supplierId;
-    private Integer typeId;
+    private Integer productTypeId;
 //    private boolean deleted;
 
     public String getProductName() {
@@ -30,11 +34,11 @@ public class ProductCreate {
         this.productInventory = productInventory;
     }
 
-    public Date getProductWarranty() {
+    public LocalDate getProductWarranty() {
         return productWarranty;
     }
 
-    public void setProductWarranty(Date productWarranty) {
+    public void setProductWarranty(LocalDate productWarranty) {
         this.productWarranty = productWarranty;
     }
 
@@ -78,11 +82,11 @@ public class ProductCreate {
         this.supplierId = supplierId;
     }
 
-    public Integer getTypeId() {
-        return typeId;
+    public Integer getProductTypeId() {
+        return productTypeId;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setProductTypeId(Integer productTypeId) {
+        this.productTypeId = productTypeId;
     }
 }

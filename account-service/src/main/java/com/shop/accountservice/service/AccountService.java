@@ -8,7 +8,9 @@ import com.shop.accountservice.entity.Account;
 import java.util.List;
 
 public interface AccountService {
-    List<Account> findAll();
+//    List<Account> findAll();
+
+    List<Account> getAll();
 
     Account findById(Integer id);
 

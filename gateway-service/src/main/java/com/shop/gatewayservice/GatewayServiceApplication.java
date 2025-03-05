@@ -15,51 +15,21 @@ public class GatewayServiceApplication {
 		SpringApplication.run(GatewayServiceApplication.class, args);
 	}
 
-	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-		return builder.routes()
-				// account-service
-				.route("user-route", r -> r.path("/user/**")
-						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
-						.uri("lb://account-service"))
-				// auth-service
-				.route("auth-route", r -> r.path("/auth/**")
-						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
-						.uri("lb://auth-service"))
-				// cart-service
-				.route("cart-route", r -> r.path("/cart/**")
-						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
-						.uri("lb://cart-service"))
-				// order-service
-				.route("order-route", r -> r.path("/order/**")
-						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
-						.uri("lb://order-service"))
-				// product
-				.route("product-route", r -> r.path("/product/**")
-						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
-						.uri("lb://product-service"))
-				// received
-				.route("received-route", r -> r.path("/received/**")
-						.filters(f -> f.stripPrefix(1)
-								.circuitBreaker(c -> c.setName("CircuitBreaker")
-										.getFallbackUri()))
-						.uri("lb://received-service"))
-
-				///swagger ui
-				.route("openapi", r -> r.path("/v3/api-docs/**")
-						.filters(f -> f.rewritePath("/v3/api-docs/(?<service>.*)", "/${service}/v3/api-docs"))
-						.uri("lb://gateway-service"))
-
-				.build();
-	}
+//	@Bean
+//	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+//		return builder.routes()
+//				// account-service
+//				.route("user-route", r -> r.path("/user/**")
+//						.filters(f -> f.stripPrefix(1)
+//								.circuitBreaker(c -> c.setName("CircuitBreaker")
+//										.getFallbackUri()))
+//						.uri("lb://account-service"))
+//
+//				///swagger ui
+//				.route("openapi", r -> r.path("/v3/api-docs/**")
+//						.filters(f -> f.rewritePath("/v3/api-docs/(?<service>.*)", "/${service}/v3/api-docs"))
+//						.uri("lb://gateway-service"))
+//
+//				.build();
+//	}
 }

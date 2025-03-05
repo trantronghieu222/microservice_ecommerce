@@ -1,10 +1,12 @@
 package com.shop.productservice.controller;
 
 import com.shop.productservice.dto.request.ProductTypeCreate;
+import com.shop.productservice.dto.response.ApiResponse;
 import com.shop.productservice.entity.ProductType;
 import com.shop.productservice.service.impl.ProductTypeServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,23 +20,28 @@ public class ProductTypeController {
     private ProductTypeServiceImpl productTypeService;
 
     @GetMapping
-    public List<ProductType> getAllProductType(){
-        return productTypeService.findAll();
+    public ResponseEntity<ApiResponse<List<ProductType>>> getAllProductType(){
+        List<ProductType> productTypes = productTypeService.findAll();
+        ApiResponse<List<ProductType>> apiResponse = ApiResponse.createResponse(productTypes, "Thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductType> getProductById(
+    public ResponseEntity<ApiResponse<ProductType>> getProductById(
             @RequestParam Integer id
     ){
-        return ResponseEntity.ok(productTypeService.findById(id));
+        ProductType productType = productTypeService.findById(id);
+        ApiResponse<ProductType> apiResponse = ApiResponse.createResponse(productType, "Thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> createProductType(
+    public ResponseEntity<ApiResponse<ProductType>> createProductType(
             @RequestBody ProductTypeCreate request
     ){
-//        ProductType productType = productTypeService.save(request);
-        return ResponseEntity.ok(request);
+        ProductType productType = productTypeService.save(request);
+        ApiResponse<ProductType> apiResponse = ApiResponse.createResponse(productType, "Thêm thành công", HttpStatus.CREATED.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
 //    @PostMapping
@@ -49,19 +56,21 @@ public class ProductTypeController {
 //    }
 
     @PutMapping
-    public ResponseEntity<ProductType> updateProductType(
+    public ResponseEntity<ApiResponse<ProductType>> updateProductType(
             @RequestParam Integer id,
             @RequestBody ProductTypeCreate request
     ){
         ProductType productType = productTypeService.update(id, request);
-        return ResponseEntity.ok(productType);
+        ApiResponse<ProductType> apiResponse = ApiResponse.createResponse(productType, "Cập nhật thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteProductType(
+    public ResponseEntity<ApiResponse<Void>> deleteProductType(
             @RequestParam Integer id
     ){
         productTypeService.delete(id);
-        return ResponseEntity.noContent().build();
+        ApiResponse<Void> apiResponse = ApiResponse.createResponse(null, "Xoá thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

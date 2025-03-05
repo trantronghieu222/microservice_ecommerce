@@ -2,7 +2,6 @@ package com.shop.cartservice.service.Impl;
 
 import com.shop.cartservice.client.AccountClient;
 import com.shop.cartservice.client.ProductClient;
-import com.shop.cartservice.dto.request.Product;
 import com.shop.cartservice.dto.request.UpdateQuantityDTO;
 import com.shop.cartservice.entity.Cart;
 import com.shop.cartservice.exception.custom.ResourceNotFoundException;

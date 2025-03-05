@@ -25,9 +25,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/account/existing", "/account", "/account/{id}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/account").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/account/{id}").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/account/{id}").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/Account", "/Account/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/account/{id}").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/account/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->

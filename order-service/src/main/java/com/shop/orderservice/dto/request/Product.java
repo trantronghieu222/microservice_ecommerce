@@ -1,19 +1,20 @@
-package com.shop.productservice.dto.response;
+package com.shop.orderservice.dto.request;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-public class ProductResponse {
+public class Product {
     private Integer productId;
     private String productName;
-    private Integer productInventory;
-    private Date productWarranty;
+    private int productInventory;
+    private LocalDate productWarranty;
     private String productImage;
-    private Integer productSaleprice;
-    private Integer productInprice;
-    private String productDescription;
     private Integer supplierId;
-    private Integer typeId;
-    private boolean deleted;
+    private int productSaleprice;
+    private int productInprice;
+    private String productDescription;
+    private Integer productTypeId;
+    private Boolean isDeleted ;
 
     public Integer getProductId() {
         return productId;
@@ -31,19 +32,19 @@ public class ProductResponse {
         this.productName = productName;
     }
 
-    public Integer getProductInventory() {
+    public int getProductInventory() {
         return productInventory;
     }
 
-    public void setProductInventory(Integer productInventory) {
+    public void setProductInventory(int productInventory) {
         this.productInventory = productInventory;
     }
 
-    public Date getProductWarranty() {
+    public LocalDate getProductWarranty() {
         return productWarranty;
     }
 
-    public void setProductWarranty(Date productWarranty) {
+    public void setProductWarranty(LocalDate productWarranty) {
         this.productWarranty = productWarranty;
     }
 
@@ -55,19 +56,27 @@ public class ProductResponse {
         this.productImage = productImage;
     }
 
-    public Integer getProductSaleprice() {
+    public Integer getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public int getProductSaleprice() {
         return productSaleprice;
     }
 
-    public void setProductSaleprice(Integer productSaleprice) {
+    public void setProductSaleprice(int productSaleprice) {
         this.productSaleprice = productSaleprice;
     }
 
-    public Integer getProductInprice() {
+    public int getProductInprice() {
         return productInprice;
     }
 
-    public void setProductInprice(Integer productInprice) {
+    public void setProductInprice(int productInprice) {
         this.productInprice = productInprice;
     }
 
@@ -79,27 +88,19 @@ public class ProductResponse {
         this.productDescription = productDescription;
     }
 
-    public Integer getSupplierId() {
-        return supplierId;
+    public Integer getProductTypeId() {
+        return productTypeId;
     }
 
-    public void setSupplierId(Integer supplierId) {
-        this.supplierId = supplierId;
+    public void setProductTypeId(Integer productTypeId) {
+        this.productTypeId = productTypeId;
     }
 
-    public Integer getTypeId() {
-        return typeId;
+    public Boolean getDeleted() {
+        return isDeleted;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }

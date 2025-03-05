@@ -1,5 +1,8 @@
 package com.shop.productservice.entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,14 +19,14 @@ public class Product {
     private int productInventory;
 
     @Column(name = "product_warranty")
-    private Date productWarranty;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate productWarranty;
 
     @Column(name = "product_image")
     private String productImage;
 
-    @ManyToOne
-    @JoinColumn(name = "supplier_id")
-    private Supplier supplier;
+    @Column(name = "supplier_id")
+    private Integer supplierId;
 
     @Column(name = "product_saleprice")
     private int productSaleprice;
@@ -31,15 +34,17 @@ public class Product {
     @Column(name = "product_inprice")
     private int productInprice;
 
-    @Column(name = "product_description")
+//    @Column(name = "product_description")
+//    private String productDescription;
+    @Lob // Sử dụng @Lob để chỉ định kiểu dữ liệu lớn
+    @Column(name = "product_description", columnDefinition = "TEXT")
     private String productDescription;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id")
-    private ProductType productType;
+    @Column(name = "type_id")
+    private Integer productTypeId;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted ;
 
     // Getter Setter
     public Integer getProductId() {
@@ -66,11 +71,11 @@ public class Product {
         this.productInventory = productInventory;
     }
 
-    public Date getProductWarranty() {
+    public LocalDate getProductWarranty() {
         return productWarranty;
     }
 
-    public void setProductWarranty(Date productWarranty) {
+    public void setProductWarranty(LocalDate productWarranty) {
         this.productWarranty = productWarranty;
     }
 
@@ -82,12 +87,12 @@ public class Product {
         this.productImage = productImage;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    public Integer getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setSupplierId(Integer supplierId) {
+        this.supplierId = supplierId;
     }
 
     public int getProductSaleprice() {
@@ -114,12 +119,12 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public ProductType getProductType() {
-        return productType;
+    public Integer getProductTypeId() {
+        return productTypeId;
     }
 
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
+    public void setProductTypeId(Integer productTypeId) {
+        this.productTypeId = productTypeId;
     }
 
     public Boolean getDeleted() {

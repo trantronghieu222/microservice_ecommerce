@@ -21,9 +21,16 @@ public class AccountController {
     @Autowired
     private AccountServiceImpl accountService;
 
+//    @GetMapping
+//    public ResponseEntity<ApiResponse<List<Account>>> findAllAccount(){
+//        List<Account> accounts = accountService.findAll();
+//        ApiResponse<List<Account>> apiResponse = ApiResponse.createResponse(accounts, "Thành công!", HttpStatus.OK.value());
+//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<Account>>> getAllAccount(){
-        List<Account> accounts = accountService.findAll();
+        List<Account> accounts = accountService.getAll();
         ApiResponse<List<Account>> apiResponse = ApiResponse.createResponse(accounts, "Thành công!", HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }

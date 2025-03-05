@@ -1,55 +1,62 @@
-import { Col, Row, Space, Table, TableProps, Tag } from 'antd';
+import { Button, Col, Row, Space, Table, TableProps, Tag } from 'antd';
 import Search from 'antd/es/transfer/search';
+import { AccountModelType } from '../../models/AccountModelType';
 
-type Props = {}
-
-interface DataType {
-    accountId: number;
-    username: string;
-    customerEmail: string;
-    customerPhone: string;
-    customerAddress: string;
+type Props = {
+    arrAccount: AccountModelType[],
+    showUpdateModel: (account: AccountModelType) => void
 }
 
-const columns: TableProps<DataType>['columns'] = [
-    {
-        title: 'Id',
-        dataIndex: 'accountId',
-        key: 'accountId',
-    },
-    {
-        title: 'Username',
-        dataIndex: 'username',
-        key: 'username',
-    },
-    {
-        title: 'Email',
-        dataIndex: 'customerEmail',
-        key: 'customerEmail',
-    },
-    {
-        title: 'Phone',
-        dataIndex: 'customerPhone',
-        key: 'customerPhone',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'customerAddress',
-        key: 'customerAddress',
-    },
-    {
-        title: 'Action',
-        key: 'action',
-        render: () => (
-            <Space size="middle">
-                <a>Invite</a>
-                <a>Delete</a>
-            </Space>
-        ),
-    },
-];
-
 const AdminUserTable = (props: Props) => {
+    const { arrAccount, showUpdateModel } = props;
+
+    const columns: TableProps<AccountModelType>['columns'] = [
+        {
+            title: 'Id',
+            dataIndex: 'accountId',
+            key: 'accountId',
+        },
+        {
+            title: 'Username',
+            dataIndex: 'username',
+            key: 'username',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'customerEmail',
+            key: 'customerEmail',
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'customerPhone',
+            key: 'customerPhone',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'customerAddress',
+            key: 'customerAddress',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <Button
+                        type='primary'
+                        onClick={() => showUpdateModel(record)}
+                    ><i className="fa fa-edit"></i></Button>
+
+                    <Button
+                        type='primary'
+                        danger
+                    >
+                        <i className="fa fa-trash"></i>
+                    </Button>
+                </Space>
+            ),
+        },
+    ];
+
     return (
         <div>
             {/* Search */}
@@ -61,7 +68,7 @@ const AdminUserTable = (props: Props) => {
                 </Col>
             </Row>
 
-            <Table<DataType> columns={columns} />
+            <Table<AccountModelType> columns={columns} dataSource={arrAccount} />
         </div>
     )
 }

@@ -8,23 +8,24 @@ public class ProductType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "type_id")
-    private Integer typeId;
+    private Integer ProductTypeId;
+
     @Column(name = "type_name")
-    private String typeName;
+    private String productTypeName;
 
-    public String getTypeName() {
-        return typeName;
+    public Integer getProductTypeId() {
+        return ProductTypeId;
     }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
+    public void setProductTypeId(Integer productTypeId) {
+        ProductTypeId = productTypeId;
     }
 
-    public Integer getTypeId() {
-        return typeId;
+    public String getProductTypeName() {
+        return productTypeName;
     }
 
-    public void setTypeId(Integer typeId) {
-        this.typeId = typeId;
+    public void setProductTypeName(String productTypeName) {
+        this.productTypeName = productTypeName;
     }
 }

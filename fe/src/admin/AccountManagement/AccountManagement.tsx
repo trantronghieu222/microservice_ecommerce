@@ -1,16 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import AdminUserTable from '../../components/AdminUserTable/AdminUserTable';
 import AccountModel from '../../components/AccountModel/AccountModel';
+import { DispatchType, RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllAccountApi } from '../../redux/reducers/AccountReducer';
+import { AccountModelType } from '../../models/AccountModelType';
 type Props = {}
 
 const AccountManagement = (props: Props) => {
+  const dispatch: DispatchType = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState<AccountModelType | null>(null);
+  const { arrAccount } = useSelector((state: RootState) => state.accountReducer);
+
+  useEffect(() => {
+    dispatch(getAllAccountApi());
+  }, [])
+
+  // console.log(arrAccount)
 
   const showModal = () => {
+    setSelectedAccount(null);
     setIsModalOpen(true);
   };
+
+  const showUpdateModal = (account: AccountModelType) => {
+    console.log("Product to update:", account);
+    setSelectedAccount(account);
+    setIsModalOpen(true);
+  }
 
   return (
     <>
@@ -23,14 +43,16 @@ const AccountManagement = (props: Props) => {
       </div>
 
       {/* Body */}
-      <AdminUserTable></AdminUserTable>
+      <AdminUserTable
+        arrAccount={arrAccount}
+        showUpdateModel={showUpdateModal}
+      ></AdminUserTable>
 
       {/* Modal */}
       <AccountModel
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
-        role={"User"}
-        titleModal={"Add Account"}
+        selectedAccount={selectedAccount}
       ></AccountModel>
     </>
   )

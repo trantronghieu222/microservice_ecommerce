@@ -9,8 +9,10 @@ public class Supplier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "supplier_id")
     private Integer supplierId;
+
     @Column(name = "supplier_name")
     private String supllierName;
+
 
     public Integer getSupplierId() {
         return supplierId;

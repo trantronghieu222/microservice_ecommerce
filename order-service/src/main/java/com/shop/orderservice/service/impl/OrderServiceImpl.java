@@ -4,13 +4,16 @@ import com.shop.orderservice.client.AccountClient;
 import com.shop.orderservice.client.ProductClient;
 import com.shop.orderservice.common.OrderStatus;
 import com.shop.orderservice.dto.request.CreateOrderRequest;
+import com.shop.orderservice.dto.request.Product;
 import com.shop.orderservice.dto.request.UpdateStatusRequest;
+import com.shop.orderservice.dto.response.ApiResponse;
 import com.shop.orderservice.entity.Order;
 import com.shop.orderservice.entity.OrderDetail;
 import com.shop.orderservice.exception.AppException;
 import com.shop.orderservice.exception.ErrorCode;
 import com.shop.orderservice.repository.OrderRepository;
 import com.shop.orderservice.service.OrderService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,9 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductClient productClient;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
@@ -42,8 +48,35 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
     }
 
+//    @Override
+//    public Order save(Integer id, List<OrderDetail> orderDetails) {
+//        Order order = new Order();
+//        order.setCustomerId(id);
+//        order.setOrderDate(new Date());
+//        order.setOrderStatus(OrderStatus.PENDING);
+//
+//        double totalAmount = orderDetails.stream()
+//                .mapToDouble(detail -> detail.getProductQuantity() * detail.getProductPrice())
+//                .sum();
+//        order.setTotalAmount(totalAmount);
+//
+//        orderDetails.forEach(detail -> detail.setOrders(order));
+//        order.setOrderDetails(orderDetails);
+//
+//        return orderRepository.save(order);
+//    }
+
     @Override
     public Order save(Integer id, List<OrderDetail> orderDetails) {
+        accountClient.getAccountById(id);
+
+        for (OrderDetail detail: orderDetails){
+            boolean isAvailable = productClient.checkStock(detail.getProductId(), detail.getProductQuantity());
+            if (!isAvailable) {
+                throw new RuntimeException("Sản phẩm " + detail.getProductId() + " không đủ số lượng!");
+            }
+        }
+
         Order order = new Order();
         order.setCustomerId(id);
         order.setOrderDate(new Date());
@@ -76,8 +109,14 @@ public class OrderServiceImpl implements OrderService {
         double totalAmount = 0.0;
 
         for (OrderDetail orderDetail: createOrderRequest.getOrderDetails()){
-            producClient.getProductById(orderDetail.getProductId());
+            ApiResponse<Product> product = producClient.getProductById(orderDetail.getProductId());
             totalAmount += orderDetail.getProductPrice() * orderDetail.getProductQuantity();
+
+            Product productDTO = product.getContent();
+            System.out.println("Retrieved Product from ProductService: " + productDTO);
+            // Cập nhật kho
+//            productDTO.setProductInventory(productDTO.getProductInventory() - orderDetail.getProductQuantity());
+//            producClient.updateProduct(productDTO);
         }
 
         order.setTotalAmount(totalAmount);
@@ -94,5 +133,4 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatus(request.getOrderStatus());
         return orderRepository.save(order);
     }
-
 }

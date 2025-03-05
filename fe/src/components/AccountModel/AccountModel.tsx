@@ -1,35 +1,68 @@
-import { Button, Col, Form, Input, Modal, Row } from "antd"
+import { Button, Col, Form, Input, message, Modal, Row, Select } from "antd"
 import { useForm } from "antd/es/form/Form";
+import { DispatchType } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { AccountModelType } from "../../models/AccountModelType";
+import { useEffect } from "react";
+import { addAccountApi, getAllAccountApi } from "../../redux/reducers/AccountReducer";
 
 type Props = {
     isOpen: boolean,
     setIsOpen: (open: boolean) => void,
-    role: string;
-    titleModal: string;
-} 
+    selectedAccount: AccountModelType | null
+}
 
-const AccountModel = ({ isOpen, setIsOpen, role, titleModal }: Props) => {
-    const [formAddUser] = useForm()
+const AccountModel = (props: Props) => {
+    const { isOpen, setIsOpen, selectedAccount } = props;
+    const dispatch: DispatchType = useDispatch();
+    const [formAddAccount] = useForm()
 
     const handleOk = () => {
-        formAddUser.resetFields();
+        formAddAccount.resetFields();
     };
 
     const handleCancel = () => {
         setIsOpen(false);
     };
 
-    const onFinish = (values: any) => {
-        const initialValues = {
-            ...values,
-            role: role,
+    const onFinish = async (values: any) => {
+        try {
+            const {accountId, ...initialValues} = {
+                ...values,
+            }
+            // console.log(initialValues)
+            if (selectedAccount) {
+                console.log({...initialValues, accountId})
+            }
+            else {
+                const res = await dispatch(addAccountApi(initialValues));
+                if (res) {
+                    message.success(res.message);
+                    dispatch(getAllAccountApi());
+                }
+            }
+        } catch (error) {
+            console.log("Error", error);
         }
-        console.log(initialValues)
     }
+
+    useEffect(() => {
+        if (selectedAccount) {
+            formAddAccount.setFieldsValue({
+                accountId: selectedAccount.accountId,
+                username: selectedAccount.username,
+                customerName: selectedAccount.customerName,
+                customerPhone: selectedAccount.customerPhone,
+                customerAddress: selectedAccount.customerAddress,
+                customerEmail: selectedAccount.customerEmail,
+                role: selectedAccount.role
+            })
+        }
+    })
 
     return (
         <Modal
-            title={titleModal}
+            title={selectedAccount ? "Update Account" : "Add Account"}
             open={isOpen}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -37,44 +70,70 @@ const AccountModel = ({ isOpen, setIsOpen, role, titleModal }: Props) => {
                 <Button key="cancel" type='primary' danger ghost onClick={() => setIsOpen(false)}>
                     Cancel
                 </Button>,
-                <Button key="ok" type='primary' onClick={() => formAddUser.submit()}>
-                    {titleModal}
+                <Button key="ok" type='primary' onClick={() => formAddAccount.submit()}>
+                    {selectedAccount ? "Update" : "Add"}
                 </Button>,
             ]}
         >
             <Form
-                form={formAddUser}
+                form={formAddAccount}
                 name="addProd"
                 onFinish={onFinish}
                 layout="vertical"
             >
                 <Row gutter={[16, 0]}>
+                    {/* Id */}
+                    <Col xs={24} sm={12} style={{ display: "none" }}>
+                        <Form.Item name="accountId">
+                            <Input />
+                        </Form.Item>
+                    </Col>
                     {/* Username */}
                     <Col xs={24} sm={12}>
                         <Form.Item
                             label="Username"
                             name="username"
-                            rules={[{required: true, message: "Username can not be blank"}]}
+                            rules={[{ required: true, message: "Username can not be blank" }]}
                         >
                             <Input />
                         </Form.Item>
                     </Col>
                     {/* Password */}
-                    <Col xs={24} sm={12}>
+                    {/* <Col xs={24} sm={12}>
                         <Form.Item
                             label="Password"
                             name="password"
-                            rules={[{required: true, message: "Password can not be blank"}]}
+                            rules={[{ required: true, message: "Password can not be blank" }]}
                         >
-                            <Input.Password />
+                            <Input.Password
+                                style={{
+                                    padding: "4px 11px",
+                                }}
+                            />
                         </Form.Item>
-                    </Col>
+                    </Col> */}
+                    {
+                        selectedAccount ? ""
+                            : <Col xs={24} sm={12}>
+                                <Form.Item
+                                    label="Password"
+                                    name="password"
+                                    rules={[{ required: true, message: "Password can not be blank" }]}
+                                >
+                                    <Input.Password
+                                        style={{
+                                            padding: "4px 11px",
+                                        }}
+                                    />
+                                </Form.Item>
+                            </Col>
+                    }
                     {/* Name */}
                     <Col xs={24} sm={12}>
                         <Form.Item
                             label="Fullname"
                             name="customerName"
-                            rules={[{required: true, message: "fullname can not be blank"}]}
+                            rules={[{ required: true, message: "fullname can not be blank" }]}
                         >
                             <Input />
                         </Form.Item>
@@ -84,7 +143,7 @@ const AccountModel = ({ isOpen, setIsOpen, role, titleModal }: Props) => {
                         <Form.Item
                             label="Phone number"
                             name="customerPhone"
-                            rules={[{required: true, message: "Phone number can not be blank"}]}
+                            rules={[{ required: true, message: "Phone number can not be blank" }]}
                         >
                             <Input />
                         </Form.Item>
@@ -108,7 +167,30 @@ const AccountModel = ({ isOpen, setIsOpen, role, titleModal }: Props) => {
                         >
                             <Input />
                         </Form.Item>
-                    </Col> 
+                    </Col>
+                    {/* Supplier */}
+                    <Col xs={24} sm={12}>
+                        <Form.Item
+                            label="Role"
+                            name="role"
+                            rules={[{ required: true, message: "Role can not be blank" }]}
+                        >
+                            <Select
+                                placeholder="Select a role"
+                                optionFilterProp="children"
+                                options={[
+                                    {
+                                        value: "User",
+                                        label: "User",
+                                    },
+                                    {
+                                        value: "Admin",
+                                        label: "Admin",
+                                    }
+                                ]}
+                            />
+                        </Form.Item>
+                    </Col>
                 </Row>
             </Form>
         </Modal>
