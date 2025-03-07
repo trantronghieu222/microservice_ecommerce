@@ -9,12 +9,14 @@ export interface ProductStateType {
     arrProduct: ProductModelType[],
     arrProductType: ProductTypeModel[],
     arrSupplier: SupplierModelType[],
+    productDetail: ProductModelType | null,
 }
 
 const initialState: ProductStateType = {
     arrProduct: [],
     arrProductType: [],
     arrSupplier: [],
+    productDetail: null 
 }
 
 const ProductReducer = createSlice({
@@ -29,13 +31,17 @@ const ProductReducer = createSlice({
             state.arrProductType = action.payload;
         },
 
+        setProductDetailAction(state: ProductStateType, action: PayloadAction<ProductModelType>){
+            state.productDetail = action.payload;
+        },
+
         setArrSupplierAction(state: ProductStateType, action: PayloadAction<SupplierModelType[]>) {
             state.arrSupplier = action.payload;
         }
     }
 });
 
-export const { setArrProductAction, setArrProductTypeAction, setArrSupplierAction } = ProductReducer.actions
+export const { setArrProductAction, setArrProductTypeAction, setArrSupplierAction, setProductDetailAction } = ProductReducer.actions
 
 export default ProductReducer.reducer
 
@@ -45,6 +51,14 @@ export const getAllProductApi = () => {
     return async (dispatch: DispatchType) => {
         const res = await axios.get("http://localhost:8080/product-service/product");
         const action: PayloadAction<ProductModelType[]> = setArrProductAction(res.data.content);
+        dispatch(action);
+    }
+}
+
+export const getProductByIdApi = (id: number) => {
+    return async (dispatch: DispatchType) => {
+        const res = await axios.get(`http://localhost:8080/product-service/product/${id}`);
+        const action: PayloadAction<ProductModelType> = setProductDetailAction(res.data.content)
         dispatch(action);
     }
 }

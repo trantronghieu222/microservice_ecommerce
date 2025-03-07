@@ -1,23 +1,71 @@
-import { Card, Input, Button, Form } from "antd";
+import { Card, Input, Button, Form, message } from "antd";
+import { getDataTextStorage, getIdFromToken } from "../../util/utilMethod";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { DispatchType, RootState } from "../../redux/store";
+import { getAccountByIdApi } from "../../redux/reducers/AccountReducer";
+import { useForm } from "antd/es/form/Form";
 
 const ProfilePage = () => {
+  const [ frmProfile ] = Form.useForm()
+  const dispatch: DispatchType = useDispatch();
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const { accountDetail } = useSelector((state: RootState) => state.accountReducer);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = getDataTextStorage("accessToken");
+    if (!token) {
+      message.error("Vui lòng đăng nhập để truy cập!");
+      navigate("/home");
+    } else {
+      setAccessToken(token);
+    }
+  }, []);
+
+  console.log(accessToken)
+  useEffect(() => {
+    if (accessToken) {
+      const userId = getIdFromToken(accessToken);
+      dispatch(getAccountByIdApi(Number(userId)));
+    }
+  }, [])
+
+
+  // console.log(accountDetail)
+
+  useEffect(() => {
+    if (accountDetail) {
+      frmProfile.setFieldsValue({
+        customerName: accountDetail.customerName,
+        customerEmail: accountDetail.customerEmail,
+        customerPhone: accountDetail.customerPhone,
+        customerAddress: accountDetail.customerAddress,
+      });
+    }
+  }, [accountDetail, frmProfile]);
+
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
       <Card title="Profile Information">
-        <Form layout="vertical">
-          <Form.Item label="Full Name" name="fullname" rules={[{ required: true, message: "Please enter your full name!" }]}>
+        <Form
+          layout="vertical"
+          form={frmProfile}
+        >
+          <Form.Item label="Full Name" name="customerName" rules={[{ required: true, message: "Please enter your full name!" }]}>
             <Input placeholder="Enter your full name" />
           </Form.Item>
 
-          <Form.Item label="Email" name="email" rules={[{ required: true, type: "email", message: "Please enter a valid email!" }]}>
+          <Form.Item label="Email" name="customerEmail" rules={[{ required: true, type: "email", message: "Please enter a valid email!" }]}>
             <Input placeholder="Enter your email" />
           </Form.Item>
 
-          <Form.Item label="Phone" name="phone" rules={[{ required: true, message: "Please enter your phone number!" }]}>
+          <Form.Item label="Phone" name="customerPhone" rules={[{ required: true, message: "Please enter your phone number!" }]}>
             <Input placeholder="Enter your phone number" />
           </Form.Item>
 
-          <Form.Item label="Address" name="address" rules={[{ required: true, message: "Please enter your address!" }]}>
+          <Form.Item label="Address" name="customerAddress" rules={[{ required: true, message: "Please enter your address!" }]}>
             <Input placeholder="Enter your address" />
           </Form.Item>
 

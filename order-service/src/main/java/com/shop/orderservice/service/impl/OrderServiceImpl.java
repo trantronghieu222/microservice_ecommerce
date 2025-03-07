@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +25,6 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private ProductClient producClient;
 
     @Autowired
     private AccountClient accountClient;
@@ -48,8 +46,22 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_FOUND));
     }
 
+    @Override
+    public List<Order> findByCustomerId(Integer id) {
+        return orderRepository.findByCustomerId(id);
+    }
+
 //    @Override
 //    public Order save(Integer id, List<OrderDetail> orderDetails) {
+//        accountClient.getAccountById(id);
+//
+//        for (OrderDetail detail: orderDetails){
+//            boolean isAvailable = productClient.checkStock(detail.getProductId(), detail.getProductQuantity());
+//            if (!isAvailable) {
+//                throw new RuntimeException("Sản phẩm " + detail.getProductId() + " không đủ số lượng!");
+//            }
+//        }
+//
 //        Order order = new Order();
 //        order.setCustomerId(id);
 //        order.setOrderDate(new Date());
@@ -67,59 +79,26 @@ public class OrderServiceImpl implements OrderService {
 //    }
 
     @Override
-    public Order save(Integer id, List<OrderDetail> orderDetails) {
-        accountClient.getAccountById(id);
-
-        for (OrderDetail detail: orderDetails){
-            boolean isAvailable = productClient.checkStock(detail.getProductId(), detail.getProductQuantity());
-            if (!isAvailable) {
-                throw new RuntimeException("Sản phẩm " + detail.getProductId() + " không đủ số lượng!");
-            }
-        }
-
-        Order order = new Order();
-        order.setCustomerId(id);
-        order.setOrderDate(new Date());
-        order.setOrderStatus(OrderStatus.PENDING);
-
-        double totalAmount = orderDetails.stream()
-                .mapToDouble(detail -> detail.getProductQuantity() * detail.getProductPrice())
-                .sum();
-        order.setTotalAmount(totalAmount);
-
-        orderDetails.forEach(detail -> detail.setOrders(order));
-        order.setOrderDetails(orderDetails);
-
-        return orderRepository.save(order);
-    }
-
-    @Override
     public Order createOrder(CreateOrderRequest createOrderRequest) {
         accountClient.getAccountById(createOrderRequest.getCustomerId());
 
         Order order = new Order();
         order.setCustomerId(createOrderRequest.getCustomerId());
-        order.setOrderDate(new Date());
+        order.setOrderDate(LocalDate.now());
+
         order.setOrderStatus(OrderStatus.PENDING);
-
-//        double totalAmount = createOrderRequest.getOrderDetails().stream()
-//                .mapToDouble(detail -> detail.getProductQuantity() * detail.getProductPrice())
-//                .sum();
-
-        double totalAmount = 0.0;
+        order.setTotalAmount(createOrderRequest.getTotalAmount());
 
         for (OrderDetail orderDetail: createOrderRequest.getOrderDetails()){
-            ApiResponse<Product> product = producClient.getProductById(orderDetail.getProductId());
-            totalAmount += orderDetail.getProductPrice() * orderDetail.getProductQuantity();
-
-            Product productDTO = product.getContent();
-            System.out.println("Retrieved Product from ProductService: " + productDTO);
-            // Cập nhật kho
-//            productDTO.setProductInventory(productDTO.getProductInventory() - orderDetail.getProductQuantity());
-//            producClient.updateProduct(productDTO);
+            boolean isAvailable = productClient.checkStock(orderDetail.getProductId(), orderDetail.getProductQuantity());
+            if (isAvailable) {
+                productClient.getProductById(orderDetail.getProductId());
+//                totalAmount += orderDetail.getProductPrice() * orderDetail.getProductQuantity();
+            }
+            else {
+                throw new RuntimeException("Sản phẩm " + orderDetail.getProductId() + " không đủ số lượng!");
+            }
         }
-
-        order.setTotalAmount(totalAmount);
 
         createOrderRequest.getOrderDetails().forEach(orderDetail -> orderDetail.setOrders(order));
         order.setOrderDetails(createOrderRequest.getOrderDetails());
@@ -132,5 +111,11 @@ public class OrderServiceImpl implements OrderService {
         Order order = findById(id);
         order.setOrderStatus(request.getOrderStatus());
         return orderRepository.save(order);
+    }
+
+    @Override
+    public void deleteOrder(Integer id) {
+        findById(id);
+        orderRepository.deleteById(id);
     }
 }

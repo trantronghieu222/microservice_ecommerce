@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, Select, Slider, Typography } from "antd";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { products } from "../../util/ProductJson";
+import { useDispatch, useSelector } from "react-redux";
+import { DispatchType, RootState } from "../../redux/store";
+import { getAllProductApi } from "../../redux/reducers/ProductReducer";
 const { Title } = Typography;
 const { Option } = Select;
 
 const ProductPage = () => {
-  const [priceRange, setPriceRange] = useState<[number, number]>([100, 250]);
+  const dispatch: DispatchType = useDispatch();
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
   const [category, setCategory] = useState("all");
+  const {arrProduct} = useSelector((state: RootState) => state.productReducer);
 
-  const filteredProducts = products.filter(
-    (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
+  useEffect(() => {
+    dispatch(getAllProductApi());
+  }, [])
+
+  // console.log("product", arrProduct)
+
+  const filteredProducts = arrProduct.filter(
+    (product) => product.productSaleprice >= priceRange[0] && product.productSaleprice <= priceRange[1]
   );
 
   return (
@@ -34,8 +44,8 @@ const ProductPage = () => {
             <Title level={5}>Filter by Price</Title>
             <Slider
               range
-              min={100}
-              max={300}
+              min={0}
+              max={100000}
               defaultValue={priceRange}
               onChange={(value) => setPriceRange(value as [number, number])}
             />
@@ -46,7 +56,7 @@ const ProductPage = () => {
         <Col xs={24} md={18}>
           <Row gutter={[16, 16]}>
             {filteredProducts.map((product) => (
-              <Col xs={24} sm={12} lg={8} key={product.id}>
+              <Col xs={24} sm={12} lg={8} key={product.productId}>
                 <ProductCard product={product} />
               </Col>
             ))}

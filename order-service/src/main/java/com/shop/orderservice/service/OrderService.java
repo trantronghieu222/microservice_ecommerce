@@ -12,9 +12,13 @@ public interface OrderService {
 
     Order findById(Integer id);
 
-    Order save(Integer id, List<OrderDetail> orderDetails);
+    List<Order> findByCustomerId (Integer id);
+
+//    Order save(Integer id, List<OrderDetail> orderDetails);
 
     Order createOrder(CreateOrderRequest createOrderRequest);
 
     Order updateStatus(Integer id, UpdateStatusRequest request);
+
+    void deleteOrder(Integer id);
 }

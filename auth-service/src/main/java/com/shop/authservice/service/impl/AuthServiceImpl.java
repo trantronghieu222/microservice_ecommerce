@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
 
         try {
             // Tạo JWT token
-            String token = JwtUtil.generateToken(accountResponse.getUsername(), response.getContent().getRole());
+            String token = JwtUtil.generateToken(accountResponse.getAccountId(), response.getContent().getRole());
 
             // Trả về AuthResponse chứa token
             AuthResponse authResponse = new AuthResponse();

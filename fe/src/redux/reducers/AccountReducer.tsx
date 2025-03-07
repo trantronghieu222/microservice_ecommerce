@@ -5,10 +5,12 @@ import axios from 'axios';
 
 export interface AccountStateType {
     arrAccount: AccountModelType[];
+    accountDetail: AccountModelType | null;
 }
 
 const initialState: AccountStateType = {
     arrAccount: [],
+    accountDetail: null
 }
 
 const AccountReducer = createSlice({
@@ -17,11 +19,15 @@ const AccountReducer = createSlice({
     reducers: {
         setArrAccountAction: (state: AccountStateType, action: PayloadAction<AccountModelType[]>) => {
             state.arrAccount = action.payload;
+        },
+
+        setAccountDetailAction: (state: AccountStateType, action: PayloadAction<AccountModelType>) => {
+            state.accountDetail = action.payload;
         }
     }
 });
 
-export const { setArrAccountAction } = AccountReducer.actions
+export const { setArrAccountAction, setAccountDetailAction } = AccountReducer.actions
 
 export default AccountReducer.reducer
 
@@ -34,8 +40,16 @@ export const getAllAccountApi = () => {
     }
 }
 
+export const getAccountByIdApi = (id: number) => {
+    return async (dispatch: DispatchType) => {
+        const res = await axios.get(`http://localhost:8080/account-service/account/${id}`);
+        const action: PayloadAction<AccountModelType> = setAccountDetailAction(res.data.content);
+        dispatch(action);
+    }
+}
+
 export const addAccountApi = (account: AccountModelType) => {
-    return async(dispatch: DispatchType) => {
+    return async (dispatch: DispatchType) => {
         const res = await axios.post("http://localhost:8080/account-service/account", account);
         return res.data;
     }

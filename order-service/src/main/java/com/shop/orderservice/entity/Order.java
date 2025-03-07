@@ -1,9 +1,11 @@
 package com.shop.orderservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shop.orderservice.common.OrderStatus;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class Order {
     private Integer customerId;
 
     @Column(name = "order_date")
-    private Date orderDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate orderDate;
 
     @Column(name = "order_status")
     private OrderStatus orderStatus;
@@ -47,11 +50,11 @@ public class Order {
         this.customerId = customerId;
     }
 
-    public Date getOrderDate() {
+    public LocalDate getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Date orderDate) {
+    public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
     }
 

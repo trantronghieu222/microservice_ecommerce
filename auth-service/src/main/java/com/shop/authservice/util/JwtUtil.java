@@ -11,13 +11,14 @@ import java.util.Date;
 public class JwtUtil {
     private static final String SECRET_KEY = "CLOCKSHOP_SECRET_KEY_SUPER_SECURE_64";
 
-    public static String generateToken(String username, Role role) throws JOSEException {
+    public static String generateToken(Integer id, Role role) throws JOSEException {
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+//                .subject(username)
                 .issuer("shop-auth-service")
                 .expirationTime(new Date(System.currentTimeMillis() + 3600 * 1000))
 //                .claim("role", role.name())
                 .claim("roles", new String[]{role.name()})
+                .claim("id", id)
                 .build();
 
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
