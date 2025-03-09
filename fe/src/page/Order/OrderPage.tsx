@@ -1,53 +1,100 @@
-import React from 'react';
-import { Table, Button, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-
-interface OrderRecord {
-  id: number;
-  products: string;
-  quantity: number;
-  total: number;
-  date: string;
-  condition: string;
-}
-
-const orders: OrderRecord[] = [
-  { id: 1, products: 'Đồng hồ Rolex', quantity: 1, total: 5000, date: '2024-02-20', condition: 'Shipped' },
-  { id: 2, products: 'Apple Watch', quantity: 2, total: 800, date: '2024-02-18', condition: 'Processing' },
-  { id: 3, products: 'Casio G-Shock', quantity: 1, total: 150, date: '2024-02-15', condition: 'Delivered' },
-];
-
-const columns: ColumnsType<OrderRecord> = [
-  { title: 'ID', dataIndex: 'id', key: 'id' },
-  { title: 'Products', dataIndex: 'products', key: 'products' },
-  { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-  { title: 'Total ($)', dataIndex: 'total', key: 'total' },
-  { title: 'Date', dataIndex: 'date', key: 'date' },
-  {
-    title: 'Condition',
-    dataIndex: 'condition',
-    key: 'condition',
-    render: (condition: string) => {
-      let color = condition === 'Shipped' ? 'blue' : condition === 'Delivered' ? 'green' : 'orange';
-      return <Tag color={color}>{condition}</Tag>;
-    },
-  },
-  {
-    title: 'Details',
-    key: 'details',
-    render: (_, record) => <Button type="link" onClick={() => handleDetails(record.id)}>View</Button>,
-  },
-];
-
-const handleDetails = (id: number) => {
-  console.log(`Viewing details for order ID: ${id}`);
-};
+import React, { useEffect, useState } from "react";
+import { Table, Button, Tag, Modal, List } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { useDispatch, useSelector } from "react-redux";
+import { DispatchType, RootState } from "../../redux/store";
+import { OrderModelType, OrderDetail } from "../../models/OrderModelType";
+import { getOrderByCustomerId } from "../../redux/reducers/OrderReducer";
 
 const OrderPage: React.FC = () => {
+  const dispatch: DispatchType = useDispatch();
+  const { arrOrder } = useSelector((state: RootState) => state.orderReducer);
+  const [selectedOrder, setSelectedOrder] = useState<OrderModelType | null>(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch(getOrderByCustomerId(1));
+  }, [])
+
+  // Hàm mở modal xem chi tiết đơn hàng
+  const handleDetails = (order: OrderModelType) => {
+    setSelectedOrder(order);
+    setIsModalVisible(true);
+  };
+
+  // Hàm đóng modal
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+  // Cấu hình cột bảng
+  const columns: ColumnsType<OrderModelType> = [
+    {
+      title: "STT",
+      key: "stt",
+      render: (_: any, __: OrderModelType, index: number) => index + 1
+    },
+    {
+      title: "Date",
+      dataIndex: "orderDate",
+      key: "orderDate"
+    },
+    {
+      title: "Total ($)",
+      dataIndex: "totalAmount",
+      key: "totalAmount"
+    },
+    {
+      title: "Status",
+      dataIndex: "orderStatus",
+      key: "orderStatus",
+      render: (status: string) => {
+        let color = status === "Pending" ? "orange" : status === "Shipped" ? "blue" : "green";
+        return <Tag color={color}>{status}</Tag>;
+      },
+    },
+    {
+      title: "Details",
+      key: "details",
+      render: (_, record) => (
+        <Button type="link" onClick={() => handleDetails(record)}>View</Button>
+      ),
+    },
+  ];
+
   return (
-    <div className='text-center' style={{ padding: 20 }}>
+    <div className="text-center" style={{ padding: 20 }}>
       <h2>Order History</h2>
-      <Table columns={columns} dataSource={orders} rowKey="id" />
+      <Table columns={columns} dataSource={arrOrder} rowKey="orderId" />
+
+      {/* Modal xem chi tiết đơn hàng */}
+      <Modal
+        title="Order Details"
+        visible={isModalVisible}
+        onCancel={handleCloseModal}
+        footer={null}
+      >
+        {selectedOrder && (
+          <div>
+            <p><strong>Order ID:</strong> {selectedOrder.orderId}</p>
+            <p><strong>Customer ID:</strong> {selectedOrder.customerId}</p>
+            <p><strong>Date:</strong> {selectedOrder.orderDate.toString()}</p>
+            <p><strong>Status:</strong> {selectedOrder.orderStatus}</p>
+            <p><strong>Total Amount:</strong> ${selectedOrder.totalAmount}</p>
+
+            <h3>Order Items:</h3>
+            <List
+              dataSource={selectedOrder.orderDetails}
+              renderItem={(item: OrderDetail) => (
+                <List.Item>
+                  <strong>Product ID:</strong> {item.productId} |
+                  <strong> Quantity:</strong> {item.productQuantity}
+                </List.Item>
+              )}
+            />
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

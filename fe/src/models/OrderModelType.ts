@@ -10,5 +10,4 @@ export interface OrderModelType {
 export interface OrderDetail {
     productId:       number;
     productQuantity: number;
-    productPrice:    number;
 }

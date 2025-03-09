@@ -22,21 +22,19 @@ const ProfilePage = () => {
     } else {
       setAccessToken(token);
     }
-  }, []);
+  }, [navigate]);
 
-  console.log(accessToken)
   useEffect(() => {
     if (accessToken) {
       const userId = getIdFromToken(accessToken);
-      dispatch(getAccountByIdApi(Number(userId)));
+      if (userId) {
+        dispatch(getAccountByIdApi(Number(userId)));
+      }
     }
-  }, [])
-
-
-  // console.log(accountDetail)
+  }, [accessToken, dispatch]);
 
   useEffect(() => {
-    if (accountDetail) {
+    if (accountDetail && frmProfile) {
       frmProfile.setFieldsValue({
         customerName: accountDetail.customerName,
         customerEmail: accountDetail.customerEmail,
@@ -44,7 +42,7 @@ const ProfilePage = () => {
         customerAddress: accountDetail.customerAddress,
       });
     }
-  }, [accountDetail, frmProfile]);
+  }, [accountDetail]);
 
   return (
     <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>

@@ -35,7 +35,7 @@ public class OrderController {
     }
 
     @GetMapping("get-by-customer/{id}")
-    public ResponseEntity<ApiResponse<List<Order>>> getOrderByCustomerId (@RequestParam Integer id) {
+    public ResponseEntity<ApiResponse<List<Order>>> getOrderByCustomerId (@PathVariable Integer id) {
         List<Order> orders = orderService.findByCustomerId(id);
         ApiResponse<List<Order>> apiResponse = ApiResponse.createResponse(orders, "Thành công", HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

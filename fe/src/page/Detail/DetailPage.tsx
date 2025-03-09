@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Row, Col, Card, Typography, Button, Divider, Image, InputNumber } from "antd";
+import { Row, Col, Card, Typography, Button, Divider, Image, InputNumber, message } from "antd";
 import { ShoppingCartOutlined, HeartOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootState } from "../../redux/store";
@@ -16,6 +16,29 @@ const DetailPage = () => {
   useEffect(() => {
     dispatch(getProductByIdApi(Number(id)));
   }, [])
+
+  const handleAddToCart = () => {
+    if (!productDetail) return;
+
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    const existingProductIndex = cart.findIndex((item: any) => item.productId === productDetail.productId);
+    if (existingProductIndex !== -1) {
+      cart[existingProductIndex].quantity += quantity;
+    } else {
+      cart.push({
+        productId: productDetail.productId,
+        productName: productDetail.productName,
+        productImage: productDetail.productImage,
+        productSaleprice: productDetail.productSaleprice,
+        quantity: quantity,
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    message.success("Sản phẩm đã được thêm vào giỏ hàng!");
+  };
+
 
   return (
     <div className="product-detail">
@@ -53,10 +76,18 @@ const DetailPage = () => {
             <Divider />
 
             <div className="action-buttons">
-              <Button type="primary" icon={<ShoppingCartOutlined />} size="large">
+              <Button
+                type="primary"
+                icon={<ShoppingCartOutlined />}
+                size="large"
+                onClick={handleAddToCart}
+              >
                 Thêm vào giỏ hàng ({quantity})
               </Button>
-              <Button icon={<HeartOutlined />} size="large">
+              <Button
+                icon={<HeartOutlined />}
+                size="large"
+              >
                 Yêu thích
               </Button>
             </div>

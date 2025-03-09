@@ -34,3 +34,11 @@ export const getAllOrderApi = () => {
     dispatch(action);
   }
 }
+
+export const getOrderByCustomerId = (id: number) => {
+  return async (dispatch: DispatchType) => {
+    const res = await axios.get(`http://localhost:8080/order-service/orders/get-by-customer/${id}`);
+    const action: PayloadAction<OrderModelType[]> = setArrOrderAction(res.data.content);
+    dispatch(action);
+  }
+}

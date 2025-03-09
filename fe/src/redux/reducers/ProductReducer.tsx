@@ -55,6 +55,24 @@ export const getAllProductApi = () => {
     }
 }
 
+export const getAllProductPagingApi = (pageIndex: number, pageSize: number) => {
+    return async (dispatch: DispatchType) => {
+        const res = await axios.get(`http://localhost:8080/product-service/product/search-paging?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+        
+        const { content } = res.data;
+        
+        // Dispatch danh sách sản phẩm
+        const action: PayloadAction<ProductModelType[]> = setArrProductAction(content.content);
+        dispatch(action);
+
+        return {
+            totalItems: content.totalItems,
+            totalPages: content.totalPages,
+            currentPage: content.currentPage
+        };
+    };
+};
+
 export const getProductByIdApi = (id: number) => {
     return async (dispatch: DispatchType) => {
         const res = await axios.get(`http://localhost:8080/product-service/product/${id}`);
