@@ -1,7 +1,9 @@
 package com.shop.accountservice.service.impl;
 
+import com.shop.accountservice.common.Role;
 import com.shop.accountservice.dto.request.AccountDTO;
 import com.shop.accountservice.dto.request.AccountUpdateDTO;
+import com.shop.accountservice.dto.request.RegisterDTO;
 import com.shop.accountservice.dto.response.AccountResponseDTO;
 import com.shop.accountservice.entity.Account;
 import com.shop.accountservice.exception.AppException;
@@ -25,11 +27,6 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private ModelMapper modelMapper;
 
-//    @Override
-//    public List<Account> findAll() {
-//        return accountRepository.findAll();
-//    }
-
     @Override
     public List<Account> getAll() {
         return accountRepository.findByAndIsDeletedFalse();
@@ -37,10 +34,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findById(Integer id) {
-//        return accountRepository.findById(id)
-//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         Optional<Account> account = accountRepository.findById(id);
-        return account.filter(a -> !a.getDeleted()) // Hoặc a -> a.getIsDeleted() == false nếu isDeleted là Boolean
+        return account.filter(a -> !a.getDeleted())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
@@ -72,6 +67,23 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
 
         return accountRepository.save(account);
+    }
+
+    @Override
+    public void register(RegisterDTO register) {
+        Account existingAccount = findExistingAccount(register.getUsername());
+        if (existingAccount != null) {
+            throw new AppException(ErrorCode.USERNAME_ALREADY_EXISTS);
+        }
+
+        Account account = modelMapper.map(register, Account.class);
+        account.setRole(Role.USER);
+
+        // Mã hoá
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        account.setPassword(passwordEncoder.encode(register.getPassword()));
+
+        accountRepository.save(account);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.shop.orderservice.exception;
 
 public enum ErrorCode {
     ORDER_NOT_FOUND(404, "ORDER_NOT_FOUND", "Order not found."),
+    PRODUCT_OUT_OF_STOCK(400, "PRODUCT_OUT_OF_STOCK", "Not enough stock available.");
     ;
 
     private final int statusCode;

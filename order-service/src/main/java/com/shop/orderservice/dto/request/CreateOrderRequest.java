@@ -1,5 +1,6 @@
 package com.shop.orderservice.dto.request;
 
+import com.shop.orderservice.common.PaymentMethod;
 import com.shop.orderservice.entity.OrderDetail;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 public class CreateOrderRequest {
     private Integer customerId;
     private Double totalAmount;
+    private PaymentMethod paymentMethod;
     private List<OrderDetail> orderDetails;
 
     public Integer getCustomerId() {
@@ -23,6 +25,14 @@ public class CreateOrderRequest {
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public List<OrderDetail> getOrderDetails() {

@@ -3,6 +3,7 @@ package com.shop.orderservice.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.shop.orderservice.common.OrderStatus;
+import com.shop.orderservice.common.PaymentMethod;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -28,6 +29,10 @@ public class Order {
 
     @Column(name = "total_amount")
     private Double totalAmount;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_method")
+    private PaymentMethod paymentMethod;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -72,6 +77,14 @@ public class Order {
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public List<OrderDetail> getOrderDetails() {

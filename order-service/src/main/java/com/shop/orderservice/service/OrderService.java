@@ -5,6 +5,7 @@ import com.shop.orderservice.dto.request.UpdateStatusRequest;
 import com.shop.orderservice.entity.Order;
 import com.shop.orderservice.entity.OrderDetail;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderService {
@@ -21,4 +22,8 @@ public interface OrderService {
     Order updateStatus(Integer id, UpdateStatusRequest request);
 
     void deleteOrder(Integer id);
+
+    Double getTotalRevenue(LocalDate from, LocalDate to);
+
+    Long getOrderCountByDate(LocalDate date);
 }

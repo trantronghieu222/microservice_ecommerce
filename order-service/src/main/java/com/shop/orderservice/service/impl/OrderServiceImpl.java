@@ -4,9 +4,7 @@ import com.shop.orderservice.client.AccountClient;
 import com.shop.orderservice.client.ProductClient;
 import com.shop.orderservice.common.OrderStatus;
 import com.shop.orderservice.dto.request.CreateOrderRequest;
-import com.shop.orderservice.dto.request.Product;
 import com.shop.orderservice.dto.request.UpdateStatusRequest;
-import com.shop.orderservice.dto.response.ApiResponse;
 import com.shop.orderservice.entity.Order;
 import com.shop.orderservice.entity.OrderDetail;
 import com.shop.orderservice.exception.AppException;
@@ -51,33 +49,6 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByCustomerId(id);
     }
 
-//    @Override
-//    public Order save(Integer id, List<OrderDetail> orderDetails) {
-//        accountClient.getAccountById(id);
-//
-//        for (OrderDetail detail: orderDetails){
-//            boolean isAvailable = productClient.checkStock(detail.getProductId(), detail.getProductQuantity());
-//            if (!isAvailable) {
-//                throw new RuntimeException("Sản phẩm " + detail.getProductId() + " không đủ số lượng!");
-//            }
-//        }
-//
-//        Order order = new Order();
-//        order.setCustomerId(id);
-//        order.setOrderDate(new Date());
-//        order.setOrderStatus(OrderStatus.PENDING);
-//
-//        double totalAmount = orderDetails.stream()
-//                .mapToDouble(detail -> detail.getProductQuantity() * detail.getProductPrice())
-//                .sum();
-//        order.setTotalAmount(totalAmount);
-//
-//        orderDetails.forEach(detail -> detail.setOrders(order));
-//        order.setOrderDetails(orderDetails);
-//
-//        return orderRepository.save(order);
-//    }
-
     @Override
     public Order createOrder(CreateOrderRequest createOrderRequest) {
         accountClient.getAccountById(createOrderRequest.getCustomerId());
@@ -85,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setCustomerId(createOrderRequest.getCustomerId());
         order.setOrderDate(LocalDate.now());
-
+        order.setPaymentMethod(createOrderRequest.getPaymentMethod());
         order.setOrderStatus(OrderStatus.PENDING);
         order.setTotalAmount(createOrderRequest.getTotalAmount());
 
@@ -93,10 +64,9 @@ public class OrderServiceImpl implements OrderService {
             boolean isAvailable = productClient.checkStock(orderDetail.getProductId(), orderDetail.getProductQuantity());
             if (isAvailable) {
                 productClient.getProductById(orderDetail.getProductId());
-//                totalAmount += orderDetail.getProductPrice() * orderDetail.getProductQuantity();
             }
             else {
-                throw new RuntimeException("Sản phẩm " + orderDetail.getProductId() + " không đủ số lượng!");
+                throw new AppException(ErrorCode.PRODUCT_OUT_OF_STOCK);
             }
         }
 
@@ -117,5 +87,16 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Integer id) {
         findById(id);
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public Double getTotalRevenue(LocalDate from, LocalDate to) {
+        Double revenue = orderRepository.getTotalRevenue(from, to);
+        return (revenue != null) ? revenue : 0.0;
+    }
+
+    @Override
+    public Long getOrderCountByDate(LocalDate date) {
+        return orderRepository.getOrderCountByDate(date);
     }
 }

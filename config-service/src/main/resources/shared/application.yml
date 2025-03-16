@@ -18,3 +18,5 @@ logging:
     root: INFO
     web: INFO
 
+jwt:
+  secret-key: "CLOCKSHOP_SECRET_KEY_SUPER_SECURE_64"

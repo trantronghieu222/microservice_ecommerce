@@ -40,6 +40,8 @@ public class ReceivedServiceImpl implements ReceivedService {
 
         @Override
     public Received create(ReceivedCreateRequest receivedCreateRequest) {
+        accountClient.getAccountById(receivedCreateRequest.getUserId());
+
         Received received = new Received();
         received.setUserId(receivedCreateRequest.getUserId());
         received.setReceivedDate(LocalDate.now());
@@ -47,6 +49,8 @@ public class ReceivedServiceImpl implements ReceivedService {
         double totalMoney = 0.0;
 
         for (ReceivedDetail receivedDetail: receivedCreateRequest.getReceivedDetails()){
+            productClient.getProductById(receivedDetail.getProductId());
+
             totalMoney += receivedDetail.getProductQuantity() * receivedDetail.getProductInprice();
         }
 

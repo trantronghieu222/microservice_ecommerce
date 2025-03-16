@@ -1,10 +1,8 @@
 package com.shop.authservice.controller;
-
-import com.shop.authservice.dto.response.AccountResponse;
 import com.shop.authservice.dto.request.LoginDTO;
+import com.shop.authservice.dto.request.RefreshTokenDTO;
 import com.shop.authservice.dto.response.ApiResponse;
 import com.shop.authservice.dto.response.AuthResponse;
-import com.shop.authservice.entity.Auth;
 import com.shop.authservice.service.impl.AuthServiceImpl;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +29,21 @@ public class AuthController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Auth>> register(@RequestBody Auth request){
-        Auth auth = authService.register(request);
-        ApiResponse<Auth> apiResponse = ApiResponse.createResponse(auth, "Đăng ký thành công!", HttpStatus.OK.value());
+//    @PostMapping("/refresh-token")
+//    public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody String refreshToken){
+//        // Loại bỏ dấu `"` nếu bị thừa
+//        refreshToken = refreshToken.replace("\"", "");
+//
+//        AuthResponse authResponse = authService.refreshToken(refreshToken);
+//        ApiResponse<AuthResponse> apiResponse = ApiResponse.createResponse(authResponse, "thành công!", HttpStatus.OK.value());
+//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody RefreshTokenDTO refreshToken){
+
+        AuthResponse authResponse = authService.refreshToken(refreshToken);
+        ApiResponse<AuthResponse> apiResponse = ApiResponse.createResponse(authResponse, "thành công!", HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

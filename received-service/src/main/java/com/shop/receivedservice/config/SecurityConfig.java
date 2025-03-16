@@ -1,5 +1,6 @@
-package com.shop.accountservice.config;
+package com.shop.receivedservice.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,19 +18,17 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private static final String SECRET_KEY = "CLOCKSHOP_SECRET_KEY_SUPER_SECURE_64";
+    @Value("${jwt.secret-key}")
+    private String SECRET_KEY;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/account/existing").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/account").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/account/{id}", "/account/profile").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/account/{id}").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/account/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/received", "/received/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/received").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/received").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
