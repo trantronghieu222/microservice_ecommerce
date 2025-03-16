@@ -1,7 +1,7 @@
 package com.shop.receivedservice.exception;
 
 public enum ErrorCode {
-    ORDER_NOT_FOUND(404, "ORDER_NOT_FOUND", "Order not found."),
+    RECEIVED_NOT_FOUND(404, "RECEIVED_NOT_FOUND", "Received not found."),
     ;
 
     private final int statusCode;

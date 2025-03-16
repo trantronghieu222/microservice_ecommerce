@@ -5,13 +5,18 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.SignedJWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.shop.authservice.common.Role;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Component
 public class JwtUtil {
-    private static final String SECRET_KEY = "CLOCKSHOP_SECRET_KEY_SUPER_SECURE_64";
+    @Value("${jwt.secret-key}")
+    private String secretKey;
 
-    public static String generateToken(Integer id, Role role) throws JOSEException {
+    public String generateToken(Integer id, Role role) throws JOSEException {
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
 //                .subject(username)
                 .issuer("shop-auth-service")
@@ -24,7 +29,7 @@ public class JwtUtil {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
         SignedJWT signedJWT = new SignedJWT(header, claimsSet);
 
-        signedJWT.sign(new MACSigner(SECRET_KEY));
+        signedJWT.sign(new MACSigner(secretKey));
 
         return signedJWT.serialize();
     }

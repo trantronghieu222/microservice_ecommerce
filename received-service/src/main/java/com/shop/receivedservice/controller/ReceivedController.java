@@ -21,20 +21,29 @@ public class ReceivedController {
     private ReceivedServiceImpl receivedService;
 
     @GetMapping
-    public List<Received> getAllReceived(){
-        return receivedService.findAll();
+    public ResponseEntity<ApiResponse<List<Received>>> getAllReceived(){
+        List<Received> receiveds = receivedService.findAll();
+        ApiResponse<List<Received>> apiResponse = ApiResponse.createResponse(receiveds, "Thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Received>> getReceivedById(Integer id) {
+        Received received = receivedService.findById(id);
+        ApiResponse<Received> apiResponse = ApiResponse.createResponse(received, "Thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+//    @PostMapping
+//    public ResponseEntity<Received> createReceived(
+//            @RequestParam Integer UserId,
+//            @RequestBody List<ReceivedDetail> receivedDetails
+//    ){
+//        Received received = receivedService.save(UserId, receivedDetails);
+//        return ResponseEntity.ok(received);
+//    }
 
     @PostMapping
-    public ResponseEntity<Received> createReceived(
-            @RequestParam Integer UserId,
-            @RequestBody List<ReceivedDetail> receivedDetails
-    ){
-        Received received = receivedService.save(UserId, receivedDetails);
-        return ResponseEntity.ok(received);
-    }
-
-    @PostMapping("/create")
     public ResponseEntity<ApiResponse<Received>> create(
             @RequestBody ReceivedCreateRequest receivedCreateRequest
     ){
@@ -44,8 +53,9 @@ public class ReceivedController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteReceived(@RequestParam Integer id){
+    public ResponseEntity<ApiResponse<?>> deleteReceived(@RequestParam Integer id){
         receivedService.delete(id);
-        return ResponseEntity.noContent().build();
+        ApiResponse<?> apiResponse = ApiResponse.createResponse(null, "Thành công", HttpStatus.OK.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 }

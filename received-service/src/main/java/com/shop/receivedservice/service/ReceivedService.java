@@ -11,8 +11,6 @@ public interface ReceivedService {
 
     Received findById(Integer id);
 
-    Received save(Integer userId, List<ReceivedDetail> receivedDetails);
-
     Received create(ReceivedCreateRequest receivedCreateRequest);
 
     void delete(Integer id);

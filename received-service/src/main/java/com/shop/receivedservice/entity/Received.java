@@ -1,8 +1,10 @@
 package com.shop.receivedservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class Received {
     private Integer userId;
 
     @Column(name = "received_date")
-    private Date receivedDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate receivedDate;
 
     @Column(name = "received_money")
     private Double receivedMoney;
@@ -44,11 +47,11 @@ public class Received {
         this.userId = userId;
     }
 
-    public Date getReceivedDate() {
+    public LocalDate getReceivedDate() {
         return receivedDate;
     }
 
-    public void setReceivedDate(Date receivedDate) {
+    public void setReceivedDate(LocalDate receivedDate) {
         this.receivedDate = receivedDate;
     }
 

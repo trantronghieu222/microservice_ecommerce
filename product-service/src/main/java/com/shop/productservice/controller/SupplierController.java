@@ -4,6 +4,7 @@ import com.shop.productservice.dto.request.SupplierCreate;
 import com.shop.productservice.dto.response.ApiResponse;
 import com.shop.productservice.entity.Supplier;
 import com.shop.productservice.service.impl.SupplierServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class SupplierController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PostMapping
     public ResponseEntity<ApiResponse<Supplier>> createSupplier(@RequestBody SupplierCreate request){
         Supplier supplier = supplierService.save(request);
@@ -40,6 +42,7 @@ public class SupplierController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PutMapping
     public ResponseEntity<ApiResponse<Supplier>> updateSupplier(@RequestParam Integer id,@RequestBody SupplierCreate request){
         Supplier supplier = supplierService.update(id, request);
@@ -47,6 +50,7 @@ public class SupplierController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> deleteSupplier(Integer id){
         supplierService.delete(id);

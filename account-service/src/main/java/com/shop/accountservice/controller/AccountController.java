@@ -6,6 +6,7 @@ import com.shop.accountservice.dto.response.AccountResponseDTO;
 import com.shop.accountservice.dto.response.ApiResponse;
 import com.shop.accountservice.entity.Account;
 import com.shop.accountservice.service.impl.AccountServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,7 @@ public class AccountController {
     @Autowired
     private AccountServiceImpl accountService;
 
-//    @GetMapping
-//    public ResponseEntity<ApiResponse<List<Account>>> findAllAccount(){
-//        List<Account> accounts = accountService.findAll();
-//        ApiResponse<List<Account>> apiResponse = ApiResponse.createResponse(accounts, "Thành công!", HttpStatus.OK.value());
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
-
+    @SecurityRequirement(name = "BearerAuth")
     @GetMapping
     public ResponseEntity<ApiResponse<List<Account>>> getAllAccount(){
         List<Account> accounts = accountService.getAll();
@@ -35,6 +30,7 @@ public class AccountController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Account>> getAccountById(
             @PathVariable Integer id
@@ -44,15 +40,23 @@ public class AccountController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+//    @GetMapping("/existing")
+//    public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountByUsername(
+//            @RequestParam String Username
+//    ){
+//        AccountResponseDTO account = accountService.findByUsername(Username);
+//        ApiResponse<AccountResponseDTO> apiResponse = ApiResponse.createResponse(account, "Thành công!", HttpStatus.OK.value());
+//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+//    }
+
     @GetMapping("/existing")
-    public ResponseEntity<ApiResponse<AccountResponseDTO>> getAccountByUsername(
+    public ResponseEntity<AccountResponseDTO> getAccountByUsername(
             @RequestParam String Username
     ){
-        AccountResponseDTO account = accountService.findByUsername(Username);
-        ApiResponse<AccountResponseDTO> apiResponse = ApiResponse.createResponse(account, "Thành công!", HttpStatus.OK.value());
-        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+        return ResponseEntity.ok(accountService.findByUsername(Username));
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PostMapping
     public ResponseEntity<ApiResponse<Account>> createAccount(
             @RequestBody AccountDTO request
@@ -62,6 +66,7 @@ public class AccountController {
         return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Account>> updateAccount(
             @RequestParam Integer UserId,
@@ -72,6 +77,7 @@ public class AccountController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteAccount(
             @RequestParam Integer UserId

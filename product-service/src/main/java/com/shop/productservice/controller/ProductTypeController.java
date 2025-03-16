@@ -4,6 +4,7 @@ import com.shop.productservice.dto.request.ProductTypeCreate;
 import com.shop.productservice.dto.response.ApiResponse;
 import com.shop.productservice.entity.ProductType;
 import com.shop.productservice.service.impl.ProductTypeServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,7 @@ public class ProductTypeController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PostMapping
     public ResponseEntity<ApiResponse<ProductType>> createProductType(
             @RequestBody ProductTypeCreate request
@@ -55,6 +57,7 @@ public class ProductTypeController {
 //        return apiResponse;
 //    }
 
+    @SecurityRequirement(name = "BearerAuth")
     @PutMapping
     public ResponseEntity<ApiResponse<ProductType>> updateProductType(
             @RequestParam Integer id,
@@ -65,6 +68,7 @@ public class ProductTypeController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @DeleteMapping
     public ResponseEntity<ApiResponse<Void>> deleteProductType(
             @RequestParam Integer id

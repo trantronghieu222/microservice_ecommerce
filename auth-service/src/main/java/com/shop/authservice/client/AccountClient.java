@@ -7,9 +7,16 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "account-service")
 public interface AccountClient {
+//    @PostMapping("/account")
+//    void createAccount(@RequestBody AccountResponse accountDTO);
+
     @PostMapping("/account")
-    void createAccount(@RequestBody AccountResponse accountDTO);
+    void createAccount(@RequestBody AccountResponse accountDTO,
+                       @RequestHeader("Authorization") String token);
+
+//    @GetMapping("/account/existing")
+//    ApiResponse<AccountResponse> getAccountByUsername(@RequestParam String Username);
 
     @GetMapping("/account/existing")
-    ApiResponse<AccountResponse> getAccountByUsername(@RequestParam String Username);
+    AccountResponse getAccountByUsername(@RequestParam String Username);
 }

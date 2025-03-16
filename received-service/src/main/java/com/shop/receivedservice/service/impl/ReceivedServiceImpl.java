@@ -5,11 +5,14 @@ import com.shop.receivedservice.Client.ProductClient;
 import com.shop.receivedservice.dto.request.ReceivedCreateRequest;
 import com.shop.receivedservice.entity.Received;
 import com.shop.receivedservice.entity.ReceivedDetail;
+import com.shop.receivedservice.exception.AppException;
+import com.shop.receivedservice.exception.ErrorCode;
 import com.shop.receivedservice.repository.ReceivedRepository;
 import com.shop.receivedservice.service.ReceivedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -32,39 +35,18 @@ public class ReceivedServiceImpl implements ReceivedService {
     @Override
     public Received findById(Integer id) {
         return receivedRepository.findById(id).
-                orElseThrow(() -> new RuntimeException("Received not found"));
+                orElseThrow(() -> new AppException(ErrorCode.RECEIVED_NOT_FOUND));
     }
 
-    @Override
-    public Received save(Integer userId, List<ReceivedDetail> receivedDetails) {
-        Received received = new Received();
-        received.setReceivedDate(new Date());
-        received.setUserId(userId);
-
-        double receivedMoney = receivedDetails.stream()
-                .mapToDouble(detail -> detail.getProductInprice() * detail.getProductQuantity())
-                .sum();
-        received.setReceivedMoney(receivedMoney);
-
-        receivedDetails.forEach(detail -> detail.setReceived(received));
-        received.setReceivedDetails(receivedDetails);
-
-        return receivedRepository.save(received);
-    }
-
-    @Override
+        @Override
     public Received create(ReceivedCreateRequest receivedCreateRequest) {
-        accountClient.getAccountById(receivedCreateRequest.getUserId());
-
         Received received = new Received();
         received.setUserId(receivedCreateRequest.getUserId());
-        received.setReceivedDate(new Date());
+        received.setReceivedDate(LocalDate.now());
 
         double totalMoney = 0.0;
 
         for (ReceivedDetail receivedDetail: receivedCreateRequest.getReceivedDetails()){
-            productClient.getProductById(receivedDetail.getProductId());
-
             totalMoney += receivedDetail.getProductQuantity() * receivedDetail.getProductInprice();
         }
 
@@ -75,6 +57,31 @@ public class ReceivedServiceImpl implements ReceivedService {
 
         return receivedRepository.save(received);
     }
+
+
+//    @Override
+//    public Received create(ReceivedCreateRequest receivedCreateRequest) {
+//        accountClient.getAccountById(receivedCreateRequest.getUserId());
+//
+//        Received received = new Received();
+//        received.setUserId(receivedCreateRequest.getUserId());
+//        received.setReceivedDate(new Date());
+//
+//        double totalMoney = 0.0;
+//
+//        for (ReceivedDetail receivedDetail: receivedCreateRequest.getReceivedDetails()){
+//            productClient.getProductById(receivedDetail.getProductId());
+//
+//            totalMoney += receivedDetail.getProductQuantity() * receivedDetail.getProductInprice();
+//        }
+//
+//        received.setReceivedMoney(totalMoney);
+//
+//        receivedCreateRequest.getReceivedDetails().forEach(receivedDetail -> receivedDetail.setReceived(received));
+//        received.setReceivedDetails(receivedCreateRequest.getReceivedDetails());
+//
+//        return receivedRepository.save(received);
+//    }
 
     @Override
     public void delete(Integer id) {

@@ -46,7 +46,7 @@ public class OrderController {
 //        return ResponseEntity.ok(orderService.save(UserId, orderDetails));
 //    }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ApiResponse<Order>> createOrder(@RequestBody CreateOrderRequest createOrderRequest){
         Order order = orderService.createOrder(createOrderRequest);
         ApiResponse<Order> apiResponse = ApiResponse.createResponse(order, "Dặt hàng thành công", HttpStatus.CREATED.value());

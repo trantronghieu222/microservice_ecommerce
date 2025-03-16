@@ -1,4 +1,4 @@
-package com.shop.accountservice.config;
+package com.shop.productservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,12 +24,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/account/existing").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/account").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/account/{id}").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/account/{id}").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/account/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/product", "/product/{id}", "/product/search-paging", "/product/check-stock/{id}", "/supplier", "/supplier/{id}", "/productType", "/productType/{id}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/product", "/product/upload-image/{id}", "/product/upload-image-cloud/{id}", "/supplier", "/productType").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/product", "/supplier", "/productType").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/product/{id}", "/supplier", "/productType").hasRole("ADMIN")
+                        //
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 ->
