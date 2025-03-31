@@ -29,16 +29,6 @@ public class AuthController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-//    @PostMapping("/refresh-token")
-//    public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody String refreshToken){
-//        // Loại bỏ dấu `"` nếu bị thừa
-//        refreshToken = refreshToken.replace("\"", "");
-//
-//        AuthResponse authResponse = authService.refreshToken(refreshToken);
-//        ApiResponse<AuthResponse> apiResponse = ApiResponse.createResponse(authResponse, "thành công!", HttpStatus.OK.value());
-//        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-//    }
-
     @PostMapping("/refresh-token")
     public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody RefreshTokenDTO refreshToken){
 

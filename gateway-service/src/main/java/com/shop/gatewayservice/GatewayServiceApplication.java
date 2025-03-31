@@ -15,21 +15,4 @@ public class GatewayServiceApplication {
 		SpringApplication.run(GatewayServiceApplication.class, args);
 	}
 
-//	@Bean
-//	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-//		return builder.routes()
-//				// account-service
-//				.route("user-route", r -> r.path("/user/**")
-//						.filters(f -> f.stripPrefix(1)
-//								.circuitBreaker(c -> c.setName("CircuitBreaker")
-//										.getFallbackUri()))
-//						.uri("lb://account-service"))
-//
-//				///swagger ui
-//				.route("openapi", r -> r.path("/v3/api-docs/**")
-//						.filters(f -> f.rewritePath("/v3/api-docs/(?<service>.*)", "/${service}/v3/api-docs"))
-//						.uri("lb://gateway-service"))
-//
-//				.build();
-//	}
 }

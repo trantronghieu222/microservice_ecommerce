@@ -9,7 +9,6 @@ import com.shop.authservice.dto.request.LoginDTO;
 import com.shop.authservice.dto.response.AuthResponse;
 import com.shop.authservice.exception.AppException;
 import com.shop.authservice.exception.ErrorCode;
-import com.shop.authservice.repository.AuthRepository;
 import com.shop.authservice.service.AuthService;
 import com.shop.authservice.util.JwtUtil;
 import org.modelmapper.ModelMapper;
@@ -28,13 +27,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Autowired
-    private AuthRepository authRepository;
-
-    @Autowired
     private AccountClient accountClient;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public AuthResponse login(LoginDTO loginDTO) {
@@ -62,33 +55,6 @@ public class AuthServiceImpl implements AuthService {
             throw new AppException(ErrorCode.JWT_TOKEN_CREATION_FAILED);
         }
     }
-
-//    @Override
-//    public AuthResponse refreshToken(String refreshToken) {
-//        if (!jwtUtil.validateToken(refreshToken)) {
-//            throw new AppException(ErrorCode.INVALID_JWT_TOKEN);
-//        }
-//
-//        Integer userId = jwtUtil.extractId(refreshToken);
-//
-//        String[] rolesArray = jwtUtil.extractRoles(refreshToken);
-//
-//        if (rolesArray == null || rolesArray.length == 0) {
-//            throw new AppException(ErrorCode.INVALID_JWT_TOKEN);
-//        }
-//
-//        String roleString = rolesArray[0].trim();
-//
-//        try {
-//            AuthResponse authResponse = new AuthResponse();
-//            String newAccessToken = jwtUtil.generateToken(userId, Role.valueOf(roleString));
-//            authResponse.setAccessToken(newAccessToken);
-//            authResponse.setRefreshToken(refreshToken);
-//            return authResponse;
-//        } catch (JOSEException e) {
-//            throw new AppException(ErrorCode.JWT_TOKEN_CREATION_FAILED);
-//        }
-//    }
 
     @Override
     public AuthResponse refreshToken(RefreshTokenDTO refreshTokenDTO) {

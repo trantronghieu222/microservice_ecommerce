@@ -14,8 +14,7 @@ import java.util.List;
 public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
-        String gatewayUrl = "http://localhost:8080"; // Thay đổi khi deploy AWS
-
+        String gatewayUrl = "http://localhost:8080";
         return new OpenAPI()
                 .info(new Info()
                         .title("Account Service API")

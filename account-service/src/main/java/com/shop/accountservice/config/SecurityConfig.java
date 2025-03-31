@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/account").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/account/{id}", "/account/profile").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/account").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/account/register").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/account/{id}").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/account/{id}").hasRole("ADMIN")
                         .anyRequest().authenticated()
