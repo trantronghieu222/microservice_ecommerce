@@ -46,7 +46,16 @@ const DetailPage = () => {
         {/* Hình ảnh sản phẩm */}
         <Col xs={24} md={12}>
           <Image.PreviewGroup>
-            <Image className="product-image" src={productDetail?.productImage} alt="Watch" />
+            <Image
+              className="product-image"
+              src={productDetail?.productImage}
+              alt="Watch"
+              style={{
+                maxWidth: "500px",
+                maxHeight: "500px",
+                objectFit: "contain",
+              }}
+            />
           </Image.PreviewGroup>
         </Col>
 

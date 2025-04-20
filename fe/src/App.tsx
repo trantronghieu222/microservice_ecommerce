@@ -26,6 +26,7 @@ import RegisterPage from './page/Register/RegisterPage'
 import DetailPage from './page/Detail/DetailPage'
 import OrderPage from './page/Order/OrderPage'
 import CheckoutPage from './page/Checkout/CheckoutPage'
+import NotFound from './page/NotFound/NotFound'
 
 function App() {
   return (
@@ -67,6 +68,9 @@ function App() {
               <Route path='SupplierManagement' element={<SupplierManagement></SupplierManagement>}></Route>
               <Route path='ProfileManagement' element={<AdminProfile></AdminProfile>}></Route>
             </Route>
+
+            {/* NOT FOUND */}
+            <Route path='*' element={<NotFound></NotFound>}></Route>
           </Routes>
         </HistoryRouter>
       </Provider>

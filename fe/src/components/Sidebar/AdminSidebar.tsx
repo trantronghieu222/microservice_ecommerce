@@ -1,6 +1,35 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { getDataTextStorage } from "../../util/utilMethod";
+import { useEffect, useState } from "react";
 
 const AdminSidebar = () => {
+  const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
+  // Check auth
+  useEffect(() => {
+    const token = getDataTextStorage("accessToken");
+    if (!token) {
+      navigate("/unauthorized");
+      return;
+    }
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const roles = payload.roles || [];
+
+      if (roles.includes("ADMIN")) {
+        setIsAuthorized(true);
+      } else {
+        navigate("/unauthorized");
+      }
+    } catch (err) {
+      console.error("Lỗi giải mã token:", err);
+      navigate("/unauthorized");
+    }
+  }, [navigate]);
+
+  // Không render gì khi chưa check xong
+  if (!isAuthorized) return null;
+
   const toggleNav = () => {
     const sidebar = document.getElementById("mySidebar");
     if (sidebar) {
@@ -15,7 +44,8 @@ const AdminSidebar = () => {
     <div id="mySidebar" className="sidebar">
       <div className="sidebarHeader">
         <h3>
-          <img className="w-75" src="/image/logo.png" alt="Logo Red" />
+          {/* <img className="w-75" src="/image/logo.png" alt="Logo Red" /> */}
+          Time Zone
         </h3>
         <button className="toggleBtn" type="button" onClick={toggleNav}>
           <i className="fas fa-bars" />
@@ -33,12 +63,6 @@ const AdminSidebar = () => {
       <NavLink to="/admin/AccountManagement" className={({isActive}) => isActive ? "bg-dark text-light" : ""}>
         <i className="fa fa-user"></i> <span>Account Management</span>
       </NavLink>
-      {/* <NavLink to="/admin/SupplierManagement">
-        <i className="fa fa-store"></i> <span>Supplier Management</span>
-      </NavLink>
-      <NavLink to="/admin/ReceivedManagement">
-      <i className="fa fa-clipboard-list"></i> <span>Received Management</span>
-      </NavLink> */}
       <NavLink to="/admin/CustomerManagement" className={({isActive}) => isActive ? "bg-dark text-light" : ""}>
         <i className="fa fa-users"></i> <span>Customer Management</span>
       </NavLink>

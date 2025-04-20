@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ProductModelType } from '../../models/ProductModelType';
 import { DispatchType } from '../store';
-import axios from 'axios';
 import { ProductTypeModel } from '../../models/ProductTypeModel';
 import { SupplierModelType } from '../../models/SupplierModelType';
+import { api } from '../../util/setting';
 
 export interface ProductStateType {
     arrProduct: ProductModelType[],
@@ -49,7 +49,7 @@ export default ProductReducer.reducer
 // Product --
 export const getAllProductApi = () => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.get("http://localhost:8080/product-service/product");
+        const res = await api.get("http://localhost:8080/product-service/product");
         const action: PayloadAction<ProductModelType[]> = setArrProductAction(res.data.content);
         dispatch(action);
     }
@@ -57,7 +57,7 @@ export const getAllProductApi = () => {
 
 export const getAllProductPagingApi = (pageIndex: number, pageSize: number) => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.get(`http://localhost:8080/product-service/product/search-paging?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+        const res = await api.get(`http://localhost:8080/product-service/product/search-paging?pageIndex=${pageIndex}&pageSize=${pageSize}`);
         
         const { content } = res.data;
         
@@ -75,22 +75,30 @@ export const getAllProductPagingApi = (pageIndex: number, pageSize: number) => {
 
 export const getProductByIdApi = (id: number) => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.get(`http://localhost:8080/product-service/product/${id}`);
+        const res = await api.get(`http://localhost:8080/product-service/product/${id}`);
         const action: PayloadAction<ProductModelType> = setProductDetailAction(res.data.content)
+        dispatch(action);
+    }
+}
+
+export const getProductByName = (keyword: String) => {
+    return async (dispatch: DispatchType) => {
+        const res = await api.get(`http://localhost:8080/product-service/product/search-paging?keyword=${keyword}`);
+        const action: PayloadAction<ProductModelType[]> = setArrProductAction(res.data.content.content);
         dispatch(action);
     }
 }
 
 export const createProductApi = (product: Object) => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.post("http://localhost:8080/product-service/product", product);
+        const res = await api.post("http://localhost:8080/product-service/product", product);
         return res.data;
     }
 }
 
 export const updateProductApi = (product: Object) => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.put("http://localhost:8080/product-service/product", product);
+        const res = await api.put("http://localhost:8080/product-service/product", product);
         return res.data;
     }
 }
@@ -98,7 +106,7 @@ export const updateProductApi = (product: Object) => {
 export const deleteProductApi = (productId: number) => {
     return async (dispatch: DispatchType) => {
         try {
-            const res = await axios.delete(`http://localhost:8080/product-service/product/${productId}`);
+            const res = await api.delete(`http://localhost:8080/product-service/product/${productId}`);
             // const productRes = await axios.get("http://localhost:8080/product-service/product");
             // dispatch(setArrProductAction(productRes.data.content));
             return res.data.message;
@@ -112,7 +120,7 @@ export const deleteProductApi = (productId: number) => {
 export const uploadProductImageApi = (id: number, formData: FormData) => {
     return async (dispatch: DispatchType) => {
         try {
-            const res = await axios.post(`http://localhost:8080/product-service/product/upload-image-cloud/${id}`, formData, {
+            const res = await api.post(`http://localhost:8080/product-service/product/upload-image-cloud/${id}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             return res.data;
@@ -127,7 +135,7 @@ export const uploadProductImageApi = (id: number, formData: FormData) => {
 // Product type
 export const getAllProductTypeApi = () => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.get("http://localhost:8080/product-service/productType");
+        const res = await api.get("http://localhost:8080/product-service/productType");
         const action: PayloadAction<ProductTypeModel[]> = setArrProductTypeAction(res.data.content);
         dispatch(action);
     }
@@ -136,7 +144,7 @@ export const getAllProductTypeApi = () => {
 // Supplier
 export const getAllSupplierApi = () => {
     return async (dispatch: DispatchType) => {
-        const res = await axios.get("http://localhost:8080/product-service/supplier");
+        const res = await api.get("http://localhost:8080/product-service/supplier");
         const action: PayloadAction<SupplierModelType[]> = setArrSupplierAction(res.data.content);
         dispatch(action);
     }

@@ -76,7 +76,7 @@ const ProductModal = (props: Props) => {
                     const uploadImg = await dispatch(uploadProductImageApi(resProd.content.productId, formData));
                     // message.success(uploadImg.message)
                 }
-
+                console.log(initialValues)
                 message.success(resProd.message);
             }
         } catch (error) {
