@@ -67,7 +67,7 @@ const HeaderHome = (props: Props) => {
                     <div className="collapse navbar-collapse navbar-custom" id="navbarSupportedContent">
                         <ul className="navbar-nav m-auto mb-2 mb-lg-0">
                             <li className="nav-item px-2">
-                                <NavLink className={({ isActive }) => isActive ? "nav-link active-header" : "nav-link"} to="home">Home</NavLink>
+                                <NavLink className={({ isActive }) => isActive ? "nav-link active-header" : "nav-link"} to="/">Home</NavLink>
                             </li>
                             <li className="nav-item px-2">
                                 <NavLink className={({ isActive }) => isActive ? "nav-link active-header" : "nav-link"} to="product">Shop</NavLink>
@@ -78,9 +78,9 @@ const HeaderHome = (props: Props) => {
                             <li className="nav-item px-2">
                                 <NavLink className={({ isActive }) => isActive ? "nav-link active-header" : "nav-link"} to="contact">Contact</NavLink>
                             </li>
-                            <li className="nav-item px-2">
+                            {/* <li className="nav-item px-2">
                                 <NavLink className={({ isActive }) => isActive ? "nav-link active-header" : "nav-link"} to="order">Order</NavLink>
-                            </li>
+                            </li> */}
                             <li className="nav-item px-2">
                                 <NavLink className={({ isActive }) => isActive ? "nav-link active-header" : "nav-link"} to="cart">Cart ({cartNumber})</NavLink>
                             </li>
@@ -135,7 +135,6 @@ const HeaderHome = (props: Props) => {
                                 </NavLink>
                             )}
                         </div>
-
                     </div>
                 </div>
             </nav>

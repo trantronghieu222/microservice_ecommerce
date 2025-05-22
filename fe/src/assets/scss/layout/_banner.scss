@@ -1,22 +1,64 @@
+// .banner {
+//     max-height: 1000px;
+//     overflow: hidden;
+
+//     .carousel-inner {
+//         display: flex;
+//         align-items: center; // Căn giữa hình ảnh theo chiều dọc
+//     }
+
+//     .carousel-item {
+//         height: 600px; // Đặt chiều cao cố định cho tất cả slide
+//     }
+
+//     .carousel-item img {
+//         height: 100%;
+//         object-fit: cover; // Cắt ảnh để vừa khung mà không méo
+//     }
+
+//     .carousel-caption {
+//         bottom: 10%;
+//     }
+// }
+
+
 .banner {
     max-height: 1000px;
-    overflow: hidden;
+    background-color: black;
+    // overflow: hidden;
 
-    .carousel-inner {
+    .banner-right {
         display: flex;
-        align-items: center; // Căn giữa hình ảnh theo chiều dọc
-    }
+        align-items: center;
+        text-align: center;
+        color: #ffffff;
 
-    .carousel-item {
-        height: 600px; // Đặt chiều cao cố định cho tất cả slide
-    }
+        h1 {
+            color: #00B9B3;
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
 
-    .carousel-item img {
-        height: 100%;
-        object-fit: cover; // Cắt ảnh để vừa khung mà không méo
-    }
+            span {
+                padding: 0 5px;
+            }
 
-    .carousel-caption {
-        bottom: 10%;
+            .discount {
+                font-size: 6rem;
+            }
+            @media (max-width: 768px) {
+                .discount {
+                    font-size: 3rem;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            font-size: 1rem;
+            flex-direction: column;
+            align-items: center;
+        }
+
     }
 }

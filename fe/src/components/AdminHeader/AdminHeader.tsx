@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 type Props = {}
 
 const AdminHeader = (props: Props) => {
@@ -7,9 +8,12 @@ const AdminHeader = (props: Props) => {
             <div className="">
                 Hello + Name
             </div>
-            <button className="adminExit">
+            {/* <button className="adminExit">
                 <i className="fa fa-sign-out-alt"></i>
-            </button>
+            </button> */}
+            <Link to='/' className="adminExit">
+                <i className="fa fa-sign-out-alt"></i>
+            </Link>
         </div>
     )
 }

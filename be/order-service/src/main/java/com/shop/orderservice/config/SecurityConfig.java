@@ -25,10 +25,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/orders/total-revenue", "/orders/count").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/orders", "/orders/{id}", "/orders/get-by-customer/{id}").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/orders").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/orders", "/orders/CircuitBreaker").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/orders").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/orders/{id}").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()

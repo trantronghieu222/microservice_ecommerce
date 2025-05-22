@@ -1,0 +1,18 @@
+@use "sass:color";
+
+@mixin button-base($bg, $color, $border, $radius, $padding) {
+  background-color: $bg;
+  color: $color;
+  border: $border;
+  border-radius: $radius;
+  padding: $padding;
+
+  &:hover {
+    background-color: color.adjust($bg, $lightness: -8%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($bg, 0.3);
+  }
+}

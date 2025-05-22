@@ -11,7 +11,7 @@
         .navbar-custom {
             .nav-link {
                 &:hover {
-                    color: red;
+                    color: #3ac4c1;
                     transition: all 0.3s;
                 }
             }
@@ -24,14 +24,14 @@
                 font-size: 1rem;
 
                 &:hover{
-                    color: red;
+                    color: #3ac4c1;
                     transition: all 0.3s;
                 }
             }
         }
 
         .active-header {
-            color: red;
+            color: #3ac4c1;
         }
     }
 }

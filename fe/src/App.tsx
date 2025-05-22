@@ -37,7 +37,7 @@ function App() {
             {/* Home template */}
             <Route path='' element={<HomeLayout></HomeLayout>} >
               <Route index element={<HomePage></HomePage>}></Route>
-              <Route path='home' element={<HomePage></HomePage>}></Route>
+              {/* <Route path='home' element={<HomePage></HomePage>}></Route> */}
               <Route path='product' element={<ProductPage></ProductPage>}></Route>
               <Route path='about' element={<AboutPage></AboutPage>}></Route>
               <Route path='cart' element={<CartPage></CartPage>}></Route>

@@ -18,7 +18,7 @@ const ProfilePage = () => {
     const token = getDataTextStorage("accessToken");
     if (!token) {
       message.error("Vui lòng đăng nhập để truy cập!");
-      navigate("/home");
+      navigate("/");
     } else {
       setAccessToken(token);
     }

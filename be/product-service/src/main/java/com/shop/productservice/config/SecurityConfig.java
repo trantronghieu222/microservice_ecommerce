@@ -23,7 +23,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/product", "/product/{id}", "/product/search-paging", "/product/check-stock/{id}", "/supplier", "/supplier/{id}", "/productType", "/productType/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/product", "/product/upload-image/{id}", "/product/upload-image-cloud/{id}", "/supplier", "/productType").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/product", "/supplier", "/productType").hasRole("ADMIN")

@@ -1,0 +1,29 @@
+@use "../helper/mixin" as mixin;
+
+
+.feature {
+    padding: 30px 0;
+    box-shadow:0 -1px 2px 0px rgba(58, 196, 193, 0.3),  0 1px 2px 0px rgba(58, 196, 193, 0.3);
+
+    .carousel-inner{
+        width: 80%;
+        margin: auto;
+        .carousel-item {
+            .card {
+                border: none;
+                padding: 50px;
+                .card-featured {
+                    color: #3ac4c1;
+                }
+                .card-title {
+                    font-size: 1.2rem;
+                }
+                .card-btn {
+                    @include mixin.button-base(#3ac4c1, #ffffff, none, 4px, 10px);
+                    font-weight: bold;
+                    width: auto;
+                }                
+            }
+        }
+    }
+}

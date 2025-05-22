@@ -45,18 +45,18 @@ const CartPage: React.FC = () => {
 
   const columns = [
     {
-      title: "Sản phẩm",
+      title: "Product id",
       dataIndex: "productName",
       key: "productName",
     },
     {
-      title: "Giá",
+      title: "Price",
       dataIndex: "productSaleprice",
       key: "productSaleprice",
       render: (price: number) => <Text strong>${price}</Text>,
     },
     {
-      title: "Số lượng",
+      title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
       render: (text: number, record: CartItem) => (
@@ -68,12 +68,12 @@ const CartPage: React.FC = () => {
       ),
     },
     {
-      title: "Tổng",
+      title: "Subtotal",
       key: "total",
       render: (_: any, record: CartItem) => <Text>${record.productSaleprice * record.quantity}</Text>,
     },
     {
-      title: "Hành động",
+      title: "Action",
       key: "action",
       render: (_: any, record: CartItem) => (
         <Button danger icon={<DeleteOutlined />} onClick={() => removeItem(record.productId)} />
@@ -84,20 +84,20 @@ const CartPage: React.FC = () => {
   return (
     <div className="cart-page">
       <Title level={2} className="cart-title">
-        <ShoppingCartOutlined /> Giỏ hàng
+        <ShoppingCartOutlined /> Cart
       </Title>
 
       <Table columns={columns} dataSource={cart} rowKey="productId" pagination={false} />
 
       <div style={{ textAlign: "right", marginTop: "20px" }}>
         <Title level={4}>
-          Tổng: <Text type="success">${getTotal()}</Text>
+          Total: <Text type="success">${getTotal()}</Text>
         </Title>
       </div>
 
       <Space style={{ marginTop: "20px", display: "flex", justifyContent: "space-between" }}>
         <Button type="default" size="large" icon={<ArrowRightOutlined />}>
-          Tiếp tục mua sắm
+          Continue shopping
         </Button>
         <Button
           type="primary"
@@ -105,7 +105,7 @@ const CartPage: React.FC = () => {
           icon={<ShoppingCartOutlined />}
           onClick={() => message.success("Tiến hành thanh toán")}
         >
-          Thanh toán
+          Proceed to checkout
         </Button>
       </Space>
     </div>

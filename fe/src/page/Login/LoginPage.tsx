@@ -20,7 +20,7 @@ const LoginPage = (props: Props) => {
             // console.log(initialValues)
             const reslogin = await dispatch(loginActionApi(initialValues));
             message.success(reslogin.message);
-            navigate("/home");
+            navigate("/");
         } catch (error) {
             message.error("Lỗi");
         }

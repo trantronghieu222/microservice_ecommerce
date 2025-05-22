@@ -61,6 +61,21 @@ public class OrderController {
     }
 
     @SecurityRequirement(name = "BearerAuth")
+    @PostMapping("/CircuitBreaker")
+    public ResponseEntity<ApiResponse<Order>> createOrderCircuitBreaker(@RequestBody CreateOrderRequest createOrderRequest){
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Order order = orderService.createOrder(createOrderRequest);
+        ApiResponse<Order> apiResponse = ApiResponse.createResponse(order, "Dặt hàng thành công", HttpStatus.CREATED.value());
+        return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+    }
+
+    @SecurityRequirement(name = "BearerAuth")
     @PutMapping
     public ResponseEntity<ApiResponse<Order>> updateStatus(
             @RequestParam Integer OrderId,
@@ -97,4 +112,6 @@ public class OrderController {
         Long count = orderService.getOrderCountByDate(date);
         return ResponseEntity.ok(count);
     }
+
+
 }

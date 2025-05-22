@@ -1,5 +1,5 @@
 // Helper
-
+// @use "helper/mixin" as mixin;
 
 // Vendors
 
@@ -19,7 +19,7 @@
 @use "layout/productCard" as productCard;
 @use "layout/footerHome" as footerHome;
 @use "layout/homeLayout" as homeLayout;
-
+@use "layout/feature" as feature;
 // Pages
 @use "page/homePage.scss" as homePage;
 @use "page/loginPage.scss" as loginPage;

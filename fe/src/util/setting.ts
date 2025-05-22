@@ -29,6 +29,9 @@ api.interceptors.response.use(
         return response
     },
     (error: AxiosError) => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem(AccessToken);
+        }
         return Promise.reject(error);
     }
 )

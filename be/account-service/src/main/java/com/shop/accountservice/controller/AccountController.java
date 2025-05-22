@@ -9,7 +9,9 @@ import com.shop.accountservice.entity.Account;
 import com.shop.accountservice.service.impl.AccountServiceImpl;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +19,9 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/account")
@@ -25,6 +29,9 @@ import java.util.List;
 public class AccountController {
     @Autowired
     private AccountServiceImpl accountService;
+
+    @Autowired
+    private Environment environment;
 
     @SecurityRequirement(name = "BearerAuth")
     @GetMapping
@@ -106,4 +113,18 @@ public class AccountController {
         ApiResponse<Object> apiResponse = ApiResponse.createResponse(null, "Xoá thành công!", HttpStatus.OK.value());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
+
+    @GetMapping("/check-port")
+    public ResponseEntity<String> getCurrentPort() {
+        String port = environment.getProperty("local.server.port");
+
+        if (port != null) {
+            System.out.println("Ứng dụng đang chạy trên cổng: " + port);
+            return ResponseEntity.ok("Ứng dụng đang chạy trên cổng: " + port);
+        } else {
+            System.out.println("Không thể xác định cổng của ứng dụng.");
+            return ResponseEntity.ok("Không thể xác định cổng của ứng dụng.");
+        }
+    }
+
 }
